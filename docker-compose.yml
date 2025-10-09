@@ -1,0 +1,28 @@
+name: monolith2microservice
+services:
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  machine_app:
+    build:
+      context: ../Machine/machine_app
+    container_name: machine_app
+    depends_on:
+      - rabbitmq
+
+  api_gateway:
+    build:
+      context: ../APIGateway
+    container_name: api_gateway
+    ports:
+      - "8002:8002"
+    depends_on:
+      - machine_app
+      - rabbitmq
