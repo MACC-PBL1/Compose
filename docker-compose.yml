@@ -17,6 +17,13 @@ services:
     depends_on:
       - rabbitmq
 
+  client_app:
+    build:
+      context: ../Client/client_app
+    container_name: client_app
+    depends_on:
+      - rabbitmq
+
   api_gateway:
     build:
       context: ../APIGateway
@@ -25,4 +32,5 @@ services:
       - "8002:8002"
     depends_on:
       - machine_app
+      - client_app
       - rabbitmq
