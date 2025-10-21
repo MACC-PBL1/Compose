@@ -18,20 +18,21 @@ services:
 
   client_app:
     build:
-      context: ../Client/client_app
+      context: ../Auth/client_app
     container_name: client_app
     depends_on:
       - rabbitmq
 
   machine_app:
     build:
-      context: ../Machine/machine_app
+      context: ../
+      dockerfile: Machine/machine_app/Dockerfile
     container_name: machine_app
     depends_on:
       - rabbitmq
       - client_app
     volumes:
-      - ../rabbitmq/ssl/:/app/ssl/:ro 
+      - ../rabbitmq/ssl/:/etc/rabbitmq/ssl/:ro
 
   api_gateway:
     build:
