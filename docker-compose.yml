@@ -26,10 +26,13 @@ services:
 
   client_app:
     build:
-      context: ../Auth/client_app
+      context: ../
+      dockerfile: /Auth/client_app/Dockerfile
     container_name: client_app
     depends_on:
-      - rabbitmq
+      - rabbitmq    
+    volumes:
+      - ../rabbitmq/ssl/:/etc/rabbitmq/ssl/:ro
     networks:
       - app-net
 
@@ -48,11 +51,14 @@ services:
 
   order_app:
     build:
-      context: ../Order/order_app
+      context: ../
+      dockerfile: Order/order_app/Dockerfile
     container_name: order_app
     depends_on:
-      rabbitmq:
-        condition: service_healthy
+      - rabbitmq
+      - client_app
+    volumes:
+      - ../rabbitmq/ssl/:/etc/rabbitmq/ssl/:ro
     networks:
       - app-net
 
@@ -65,6 +71,7 @@ services:
     depends_on:
       - machine_app
       - client_app
+      - order_app
       - rabbitmq
     networks:
       - app-net
@@ -74,4 +81,3 @@ volumes:
 
 networks:
   app-net:
-    external: true
