@@ -55,6 +55,17 @@ services:
     networks:
       - app-net
 
+  delivery_app:
+    build:
+      context: ../Delivery/delivery_app
+    container_name: delivery_app
+    depends_on:
+      - rabbitmq
+    volumes:
+      - ../rabbitmq/ssl/:/app/ssl/:ro 
+    networks:
+      - app-net
+
   api_gateway:
     build:
       context: ../APIGateway
