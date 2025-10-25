@@ -1,0 +1,12 @@
+[submodule "Machine"]
+	path = Machine
+	url = https://github.com/monolith2microservice/Machine.git
+[submodule "Auth"]
+	path = Auth
+	url = https://github.com/monolith2microservice/Auth.git
+[submodule "Order"]
+	path = Order
+	url = https://github.com/monolith2microservice/Order.git
+[submodule "APIGateway"]
+	path = APIGateway
+	url = https://github.com/monolith2microservice/APIGateway.git
