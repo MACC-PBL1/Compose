@@ -5,11 +5,11 @@ services:
     image: rabbitmq:4-management
     container_name: rabbitmq
     ports:
-      - "5671:5671"
+      - "5672:5672"
       - "15672:15672"
     environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWD:-guest}
     healthcheck:
       test: ["CMD", "rabbitmqctl", "status"]
       interval: 5s
@@ -40,13 +40,18 @@ services:
   machine_app:
     build:
       context: ../
-      dockerfile: Machine/machine_app/Dockerfile
+      dockerfile: Machine/Dockerfile
     container_name: machine_app
     depends_on:
       - rabbitmq
       - client_app
     volumes:
       - ../rabbitmq/ssl/:/etc/rabbitmq/ssl/:ro
+    environment:
+      PYTHONUNBUFFERED: 1
+      SQLALCHEMY_DATABASE_URL: ${SQLALCHEMY_SQLITE_DATABASE_MACHINE_URI}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+    restart: on-failure
     networks:
       - app-net
 
