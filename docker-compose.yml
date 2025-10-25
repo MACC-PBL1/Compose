@@ -30,7 +30,8 @@ services:
       dockerfile: /Auth/client_app/Dockerfile
     container_name: client_app
     depends_on:
-      - rabbitmq    
+      rabbitmq:
+        condition: service_healthy
     volumes:
       - ../rabbitmq/ssl/:/etc/rabbitmq/ssl/:ro
     networks:
@@ -57,6 +58,8 @@ services:
     depends_on:
       - rabbitmq
       - client_app
+    command: >
+      sh -c "sleep 10 && hypercorn app.main:app --bind 0.0.0.0:8000"
     volumes:
       - ../rabbitmq/ssl/:/etc/rabbitmq/ssl/:ro
     networks:
