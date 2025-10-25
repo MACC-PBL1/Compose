@@ -1,4 +1,4 @@
-name: monolith2microservice
+name: microservice-structure
 
 services:
   rabbitmq:
