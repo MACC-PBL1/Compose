@@ -79,9 +79,6 @@ services:
     depends_on:
       - rabbitmq
       - client_app
-    # ports:
-    #   - '13000:8000'
-    #   - '13443:8443'
     volumes:
       - delivery-db:/database
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -100,9 +97,6 @@ services:
     restart: on-failure
   payment:
     build: Payment
-    # ports:
-    #   - '13000:8000'
-    #   - '13443:8443'
     volumes:
       - payment-db:/database
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -120,39 +114,39 @@ services:
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
     restart: on-failure
     depends_on:
-      rabbitmq:
-        condition: service_healthy
+    - rabbitmq
+    - client_app
 
-  api_gateway:
-    build: APIGateway/
-    container_name: api_gateway
-    ports:
-      - "8002:8002"
-    depends_on:
-      - rabbitmq
-      - client_app
-      - machine
-      - order
-      - delivery
-      - payment
+  # api_gateway:
+  #   build: APIGateway/
+  #   container_name: api_gateway
+  #   ports:
+  #     - "8002:8002"
+  #   depends_on:
+  #     - rabbitmq
+  #     - client_app
+  #     - machine
+  #     - order
+  #     - delivery
+  #     - payment
 
-  haproxy:
-    image: haproxy:2.8-alpine
-    container_name: haproxy
-    ports:
-      - "443:443"
-      - "80:80"
-    volumes:
-      - ./ssl_setup/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
-      - ./ssl_setup/ssl:/etc/ssl/certs:ro
-    restart: unless-stopped
-    depends_on:
-      - rabbitmq
-      - client_app
-      - machine
-      - order
-      - delivery
-      - payment
+  # haproxy:
+  #   image: haproxy:2.8-alpine
+  #   container_name: haproxy
+  #   ports:
+  #     - "443:443"
+  #     - "80:80"
+  #   volumes:
+  #     - ./ssl_setup/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+  #     - ./ssl_setup/ssl:/etc/ssl/certs:ro
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - rabbitmq
+  #     - client_app
+  #     - machine
+  #     - order
+  #     - delivery
+  #     - payment
 
 volumes:
   rabbitmq_data:
