@@ -17,75 +17,129 @@ services:
       retries: 5
       start_period: 10s
     volumes:
-      - ../rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
-      - ../rabbitmq/ssl/:/etc/rabbitmq/ssl/:ro
+      - ./ssl_setup/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./ssl_setup/ssl/:/etc/rabbitmq/ssl/:ro
       - rabbitmq_data:/var/lib/rabbitmq
     restart: unless-stopped
-    networks:
-      - app-net
-
   client_app:
     build:
-      context: ../
-      dockerfile: /Auth/client_app/Dockerfile
+      context: ./
+      dockerfile: Auth/client_app/Dockerfile
     container_name: client_app
     depends_on:
       rabbitmq:
         condition: service_healthy
     volumes:
-      - ../rabbitmq/ssl/:/etc/rabbitmq/ssl/:ro
-    networks:
-      - app-net
-
-  machine_app:
-    build:
-      context: ../
-      dockerfile: Machine/Dockerfile
-    container_name: machine_app
+      - ./ssl_setup/ssl/:/etc/rabbitmq/ssl/:ro
+  machine:
+    build: Machine/
+    container_name: machine
     depends_on:
       - rabbitmq
       - client_app
     volumes:
-      - ../rabbitmq/ssl/:/etc/rabbitmq/ssl/:ro
+      - machine-db:/database
+      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
     environment:
       PYTHONUNBUFFERED: 1
-      SQLALCHEMY_DATABASE_URL: ${SQLALCHEMY_SQLITE_DATABASE_MACHINE_URI}
+      SQLALCHEMY_DATABASE_URL: ${SQLALCHEMY_SQLITE_DATABASE_URI}
       RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
+      RABBITMQ_USE_TLS: ${RABBITMQ_USE_TLS}
+      RABBITMQ_CA_CERT_PATH: ${RABBITMQ_CA_CERT_PATH}
+      RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
+      RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
+      RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
     restart: on-failure
-    networks:
-      - app-net
-
-  order_app:
-    build:
-      context: ../
-      dockerfile: Order/order_app/Dockerfile
-    container_name: order_app
+  order:
+    build: Order/
+    container_name: order
     depends_on:
       - rabbitmq
       - client_app
-    command: >
-      sh -c "sleep 10 && hypercorn app.main:app --bind 0.0.0.0:8000"
     volumes:
-      - ../rabbitmq/ssl/:/etc/rabbitmq/ssl/:ro
-    networks:
-      - app-net
+      - order-db:/database
+      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
+    environment:
+      PYTHONUNBUFFERED: 1
+      SQLALCHEMY_DATABASE_URL: ${SQLALCHEMY_SQLITE_DATABASE_URI}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
+      RABBITMQ_USE_TLS: ${RABBITMQ_USE_TLS}
+      RABBITMQ_CA_CERT_PATH: ${RABBITMQ_CA_CERT_PATH}
+      RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
+      RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
+      RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+  delivery:
+    build: Delivery
+    container_name: delivery
+    depends_on:
+      - rabbitmq
+      - client_app
+    # ports:
+    #   - '13000:8000'
+    #   - '13443:8443'
+    volumes:
+      - delivery-db:/database
+      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
+    environment:
+      PYTHONUNBUFFERED: 1
+      SQLALCHEMY_DATABASE_URL: ${SQLALCHEMY_SQLITE_DATABASE_URI}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
+      RABBITMQ_USE_TLS: ${RABBITMQ_USE_TLS}
+      RABBITMQ_CA_CERT_PATH: ${RABBITMQ_CA_CERT_PATH}
+      RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
+      RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
+      RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+    restart: on-failure
+  payment:
+    build: Payment
+    # ports:
+    #   - '13000:8000'
+    #   - '13443:8443'
+    volumes:
+      - payment-db:/database
+      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
+    environment:
+      PYTHONUNBUFFERED: 1
+      SQLALCHEMY_DATABASE_URL: ${SQLALCHEMY_SQLITE_DATABASE_URI}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
+      RABBITMQ_USE_TLS: ${RABBITMQ_USE_TLS}
+      RABBITMQ_CA_CERT_PATH: ${RABBITMQ_CA_CERT_PATH}
+      RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
+      RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
+      RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+    restart: on-failure
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
 
   api_gateway:
-    build:
-      context: ../APIGateway
+    build: APIGateway/
     container_name: api_gateway
     ports:
       - "8002:8002"
     depends_on:
-      - machine_app
-      - client_app
-      - order_app
       - rabbitmq
-    networks:
-      - app-net
+      - client_app
+      - machine
+      - order
+      - delivery
+      - payment
 
 volumes:
   rabbitmq_data:
-
-networks:
-  app-net:
+  machine-db:
+  order-db:
+  delivery-db:
+  payment-db:

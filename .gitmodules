@@ -10,3 +10,9 @@
 [submodule "APIGateway"]
 	path = APIGateway
 	url = https://github.com/monolith2microservice/APIGateway.git
+[submodule "Delivery"]
+	path = Delivery
+	url = https://github.com/monolith2microservice/Delivery.git
+[submodule "Payment"]
+	path = Payment
+	url = https://github.com/monolith2microservice/Payment.git
