@@ -5,8 +5,7 @@ services:
     image: rabbitmq:4-management
     container_name: rabbitmq
     ports:
-      - "5672:5672"
-      - "15672:15672"
+      - "15671:15671"
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-guest}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWD:-guest}
@@ -129,6 +128,24 @@ services:
     container_name: api_gateway
     ports:
       - "8002:8002"
+    depends_on:
+      - rabbitmq
+      - client_app
+      - machine
+      - order
+      - delivery
+      - payment
+
+  haproxy:
+    image: haproxy:2.8-alpine
+    container_name: haproxy
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./ssl_setup/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - ./ssl_setup/ssl:/etc/ssl/certs:ro
+    restart: unless-stopped
     depends_on:
       - rabbitmq
       - client_app
