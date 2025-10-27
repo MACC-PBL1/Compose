@@ -16,3 +16,6 @@
 [submodule "Payment"]
 	path = Payment
 	url = https://github.com/monolith2microservice/Payment.git
+[submodule "event-logger"]
+	path = event-logger
+	url = https://github.com/monolith2microservice/event-logger.git

@@ -28,6 +28,8 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+      event-logger:
+        condition: service_healthy
       machine:
         condition: service_healthy
       order:
@@ -49,6 +51,8 @@ services:
     container_name: machine
     depends_on:
       rabbitmq:
+        condition: service_healthy
+      event-logger:
         condition: service_healthy
     volumes:
       - machine-db:/database
@@ -78,6 +82,8 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+      event-logger:
+        condition: service_healthy
     volumes:
       - order-db:/database
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -104,6 +110,8 @@ services:
     container_name: delivery
     depends_on:
       rabbitmq:
+        condition: service_healthy
+      event-logger:
         condition: service_healthy
     volumes:
       - delivery-db:/database
@@ -132,6 +140,8 @@ services:
     container_name: payment
     depends_on:
       rabbitmq:
+        condition: service_healthy
+      event-logger:
         condition: service_healthy
     volumes:
       - payment-db:/database
@@ -183,9 +193,57 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
+  influxdb:
+    image: influxdb:2.7
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+    environment:
+      INFLUXDB_INIT_MODE: ${INFLUXDB_INIT_MODE}
+      INFLUXDB_INIT_USERNAME: ${INFLUXDB_INIT_USERNAME}
+      INFLUXDB_INIT_PASSWORD: ${INFLUXDB_INIT_PASSWORD}
+      INFLUXDB_INIT_ORG: ${INFLUXDB_INIT_ORG}
+      INFLUXDB_INIT_BUCKET: ${INFLUXDB_INIT_BUCKET}
+      INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_INIT_ADMIN_TOKEN}
+    healthcheck:
+      test: ["CMD", "influx", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  event-logger:
+    build: event-logger
+    container_name: event-logger
+    depends_on:
+      influxdb:
+        condition: service_healthy
+    volumes:
+      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
+    environment:
+      INFLUXDB_URL: ${INFLUXDB_URL}
+      INFLUXDB_TOKEN: ${INFLUXDB_INIT_ADMIN_TOKEN}
+      INFLUXDB_ORG: ${INFLUXDB_INIT_ORG}
+      INFLUXDB_BUCKET: ${INFLUXDB_INIT_BUCKET}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
+      RABBITMQ_USE_TLS: ${RABBITMQ_USE_TLS}
+      RABBITMQ_CA_CERT_PATH: ${RABBITMQ_CA_CERT_PATH}
+      RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
+      RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
+      RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
 volumes:
   rabbitmq_data:
   machine-db:
   order-db:
   delivery-db:
   payment-db:
+  influxdb-data:
