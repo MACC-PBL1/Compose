@@ -1,0 +1,32 @@
+meta {
+  name: Order Health Check
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:8002/order/health
+  body: none
+  auth: none
+}
+
+params:query {
+  ~Authorization: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsInR5cGUiOiJyZWZyZXNoIiwiZXhwIjoxNzYyMTI3MjM4fQ.LRgj5HGAnl3zWOsi6dsE4u9MjPfrTsxVD0j5_bRWp4F1QXcPytTWVOdsNESDe7WWAhiOStt_jZHxtwwE69GSSEie7_FJ969Q4SutNQoQPVo2yo_YF4ioSQXMw0Ye8h6pg-I4Mio7uH2dXJJLnqI37rLEbHEq4j2uODgNUnB42eESQoHxN2ogz6AqDYbB3rHglQ9lp9bYP4gPIBEl6u8eGGgPNNrdbXV25dXGhaR8-ovRiuUrW2cWKyTVYYX7MfOaln_e4vfKawf5z5whwFlnf9mJEesh3ISNuoAPTHQ8z8CU7ohqV7Ptf2iGqOAplY-zENrK5aX_hEkYX9OPGE7aGA
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc2MTQ5MzMzNX0.TlGizYztwlw5kRi_BdfO_La0XaTlbPvqviV-gBdv9dnPECwJODdo71nMDh0m2gfdJWswUQAM-DYPRKxe5u4Hs1WrS3OgrXCP8AFUw7Uov3SQQAx3mqnnGS1k6V5UoYM-JQaYa0p85vHcoUGHhdSj6xkmp3WxGWN1Aj4fciuJZu0NRa0xZvNIClTv5lGBqmv64zs59clywUsM5sWL8OsuFGEeMIQhGQQOAmNZHRHkktocIW0umPT3mIskItPUyGSPCirUdAjjC6lN8ZXdm4Wde4en1L8GrqteHVndTeBOKhE8BBJ13E9EXtNH5gs8GFvzokrKgRwiEFo0vPlEgps84w
+}
+
+docs {
+  # Order Health Check
+  
+  Simple endpoint to verify that the Order service is running.
+  
+  ## Expected Response
+  ```json
+  {
+    "detail": "Order service is running"
+  }
+  ```
+}

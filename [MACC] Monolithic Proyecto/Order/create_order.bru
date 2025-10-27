@@ -1,0 +1,50 @@
+meta {
+  name: Create Order
+  type: http
+  seq: 2
+}
+
+post {
+  url: https://localhost/order/create_order?piece_amount=5
+  body: json
+  auth: bearer
+}
+
+params:query {
+  piece_amount: 5
+}
+
+headers {
+  Authorization: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc2MTU1NTUxMH0.CL9AWKv00h98JJyXG0RNlvdyF20Gju1vw1ZMFiP5WEbWq2fxxooRTeQzK_9h4e-C-9bWdJRDO3BMcTDtg3Gtgo8vnwF5hP4XU-inj18WpoMNL3eLZu75s5gt2IVi-szNYzZF-Pm3akwCnvvaeJCIaw35uMcoW8qQmbr0asQ98u9z3l0eEd-_geBNDpB02wApiirvtMtU5EkUxeYrVmh5UeN-MccGK4KUiuG4n9IKYcNC-hQpxkNqTwBcalmKHibfUCpMSmYWRfwVsq8P9ZI0ZKghVJURpHTkiYbNBUemL_tldR5_gvcjjRYL_11f7Ssm1j8qZHx5NH63EXDtCwlozw
+}
+
+auth:bearer {
+  token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc2MTU2NTYzNn0.W8ZQr8wZpPoFnjubPBGw2VMh2vM7xsmp9jYzoeWsR1PeESwJOR3jhgDb6UwpnH3lqXWlEhG2e09UypKzspKlnrsVZ00jQaXzV1WIg7d05qqVI-FW7vBTUZJXCy__83SAmz8TMT-cILTajTnzR1V_Epa4k3uEiiM_aeRThis1Adx7cixvfTvWE9m5HxBDUUcFfWbhj0joBz01HSs3AHyUQcWgtlTtXz0rmV4xWT7NJPRz0NasXQWGBfEfXqslJYruLKRmHZC5sXUsHaMExpBUvY7n4RSfE4NjJICobx9AJ_sUS9JuSb8YgBsY-iBRFDOgmF9HOepr0T5XpuHzNI4SyQ
+}
+
+docs {
+  # Create Order
+  
+  Creates a new manufacturing order in the system.
+  
+  ## Request Body
+  - `client_id` (integer, required): ID of the client placing the order
+  - `number_of_pieces` (integer, required): Number of pieces to manufacture
+  - `description` (string, required): Description of the order
+  
+  ## Expected Response (201 Created)
+  ```json
+  {
+    "id": 1,
+    "client_id": 1,
+    "number_of_pieces": 5,
+    "description": "Order for custom parts",
+    "status": "Pending",
+    "created_at": "2025-10-23T10:30:00",
+    "pieces": []
+  }
+  ```
+  
+  ## Events Published
+  This endpoint publishes an `order.created` event to RabbitMQ.
+}

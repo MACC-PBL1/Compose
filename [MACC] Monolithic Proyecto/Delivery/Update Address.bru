@@ -1,0 +1,23 @@
+meta {
+  name: Update Address
+  type: http
+  seq: 6
+}
+
+post {
+  url: http://localhost:8002/address/{{delivery_id}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "address": "Calle Alcalá 25, Madrid",
+    "jwt": "{{jwt_token}}"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

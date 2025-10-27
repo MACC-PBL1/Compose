@@ -1,0 +1,46 @@
+meta {
+  name: Delete Order
+  type: http
+  seq: 5
+}
+
+delete {
+  url: http://localhost:8002/order/1
+  body: none
+  auth: none
+}
+
+docs {
+  # Delete Order
+  
+  Deletes an existing order and all its associated pieces from the database.
+  
+  ## Path Parameters
+  - `order_id` (integer, required): The ID of the order to delete
+  
+  ## Expected Response (200 OK)
+  ```json
+  {
+    "id": 1,
+    "client_id": 1,
+    "number_of_pieces": 5,
+    "description": "Order for custom parts",
+    "status": "Pending",
+    "created_at": "2025-10-23T10:30:00",
+    "pieces": []
+  }
+  ```
+  
+  ## Error Response (404 Not Found)
+  ```json
+  {
+    "detail": "Order 1 not found"
+  }
+  ```
+  
+  ## Warning
+  This operation is irreversible. All pieces associated with this order will also be deleted.
+  
+  ## Usage
+  Change the `1` in the URL to the order ID you want to delete.
+}

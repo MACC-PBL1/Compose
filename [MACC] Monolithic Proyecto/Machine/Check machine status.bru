@@ -1,0 +1,26 @@
+meta {
+  name: Check machine status
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://localhost/machine/status
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc2MTU2NDMyMH0.GdpMmysbZ-d5Cd4FOnrRf3iB56QxX7nLF85QlqrBlr_D6HeROCwpaJO9appSp4ZYD_NADuoeqJ3-xuzRjLHlDSpOM0adGOsgltLdLrv_Dmj8HYQda40FkppYRLZD9H1J3ihzjJELdkKiDCyWWL2-LXVRTJh4tMs-5hd5C-jWCuG_KtC52jMKozGISQ_Sg0erkc9ewvCXWh-g_12y-7xfLYku4wU4XcWB4PBRmJM4A1yV54Rhy863sUA79yb3h-3mFNwck-i7DiAZ7Rs5JVrQcg6b3fYCvN_41Z5qU-vDH84SqjgLAPHwDDx65n3Nf-fkL22jM2TWjUP13ly9f8lKtA
+}
+
+assert {
+  res.body: isJson
+  res.body.queue: isArray
+  res.body.status: isNotEmpty
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

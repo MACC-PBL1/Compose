@@ -1,0 +1,50 @@
+meta {
+  name: Deposit payment
+  type: http
+  seq: 6
+}
+
+post {
+  url: http://localhost:8002/payment/deposit
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsInR5cGUiOiJyZWZyZXNoIiwiZXhwIjoxNzYyMTI3MjM4fQ.LRgj5HGAnl3zWOsi6dsE4u9MjPfrTsxVD0j5_bRWp4F1QXcPytTWVOdsNESDe7WWAhiOStt_jZHxtwwE69GSSEie7_FJ969Q4SutNQoQPVo2yo_YF4ioSQXMw0Ye8h6pg-I4Mio7uH2dXJJLnqI37rLEbHEq4j2uODgNUnB42eESQoHxN2ogz6AqDYbB3rHglQ9lp9bYP4gPIBEl6u8eGGgPNNrdbXV25dXGhaR8-ovRiuUrW2cWKyTVYYX7MfOaln_e4vfKawf5z5whwFlnf9mJEesh3ISNuoAPTHQ8z8CU7ohqV7Ptf2iGqOAplY-zENrK5aX_hEkYX9OPGE7aGA
+}
+
+body:json {
+  {
+    "client_id": 1,
+    "amount": 150.50
+  }
+  
+}
+
+docs {
+  # Create Order
+  
+  Creates a new manufacturing order in the system.
+  
+  ## Request Body
+  - `client_id` (integer, required): ID of the client placing the order
+  - `number_of_pieces` (integer, required): Number of pieces to manufacture
+  - `description` (string, required): Description of the order
+  
+  ## Expected Response (201 Created)
+  ```json
+  {
+    "id": 1,
+    "client_id": 1,
+    "number_of_pieces": 5,
+    "description": "Order for custom parts",
+    "status": "Pending",
+    "created_at": "2025-10-23T10:30:00",
+    "pieces": []
+  }
+  ```
+  
+  ## Events Published
+  This endpoint publishes an `order.created` event to RabbitMQ.
+}

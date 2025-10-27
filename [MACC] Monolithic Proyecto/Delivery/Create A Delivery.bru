@@ -1,0 +1,23 @@
+meta {
+  name: Create A Delivery
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8002/deliveries
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "client_id": "1",
+    "order_id": "101"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

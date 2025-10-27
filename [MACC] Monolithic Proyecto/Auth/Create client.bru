@@ -1,0 +1,31 @@
+meta {
+  name: Create client
+  type: http
+  seq: 5
+}
+
+post {
+  url: http://localhost:8002/auth/users/register
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc2MDk4MTg4OH0.UswfGazGml8qXcGWPbU1_UZ1JYIKb5Aj64h4M8rRBf_9WVmqGmUN3yjmlvGV-n_lnTKn-ru2lrsyQ-czP0nyFmleXD4pqnPvu1y-nxtlGVwT3CPYMIl1MRmHlcZmcN2QZxzVXzRrJSC-C0fcc3ASyaJlwXgBhSN7KrmxBjLxkeBfq0Uu9wFxzcGc2s3_iJpiy43AQfBrdm8cezfyx9PxrVtd4MKqLB9jP0V2U-LgjgRbNKBv00nAVO7-1OOlLjLt-ZrJkaBIKwCo0wBpHs-U8VDbWv_intsrakaJCdLpiMuS5IJZUskXjqkcvc2b4d6YFMUSk37v4MZg2u2hTGyjWQ
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "name": "prueba",
+    "email": "prueba@example.com",
+    "phone": "+34 600 123 456",
+    "password": "pruebaprueba",
+    "role": "client"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,0 +1,25 @@
+meta {
+  name: Update Delivery
+  type: http
+  seq: 3
+}
+
+put {
+  url: http://localhost:8002/deliveries/{{delivery_id}}
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "client_id": 5,
+    "order_id": 456,
+    "address": "Calle Nueva 15, Barcelona",
+    "status": "delivered"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
