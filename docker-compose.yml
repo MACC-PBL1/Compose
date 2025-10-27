@@ -97,6 +97,7 @@ services:
     restart: on-failure
   payment:
     build: Payment
+    container_name: payment
     volumes:
       - payment-db:/database
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
