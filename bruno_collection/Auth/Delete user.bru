@@ -5,7 +5,7 @@ meta {
 }
 
 delete {
-  url: http://localhost:8002/auth/users/2
+  url: https://localhost/auth-service/users/2
   body: none
   auth: inherit
 }
@@ -17,4 +17,5 @@ headers {
 
 settings {
   encodeUrl: true
+  timeout: 0
 }

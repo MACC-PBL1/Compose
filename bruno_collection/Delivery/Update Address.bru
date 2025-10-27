@@ -5,16 +5,14 @@ meta {
 }
 
 post {
-  url: http://localhost:8002/address/{{delivery_id}}
+  url: https://localhost/deliveries/address?order_id=1&address=Calle Alcalá 25, Madrid
   body: json
   auth: inherit
 }
 
-body:json {
-  {
-    "address": "Calle Alcalá 25, Madrid",
-    "jwt": "{{jwt_token}}"
-  }
+params:query {
+  order_id: 1
+  address: Calle Alcalá 25, Madrid
 }
 
 settings {

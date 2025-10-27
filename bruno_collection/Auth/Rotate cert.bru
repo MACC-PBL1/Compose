@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: http://localhost:8002/auth/rotate-cert
+  url: https://localhost/auth-service/rotate-cert
   body: none
   auth: inherit
 }
@@ -18,4 +18,5 @@ headers {
 
 settings {
   encodeUrl: true
+  timeout: 0
 }

@@ -5,7 +5,7 @@ meta {
 }
 
 get {
-  url: http://localhost:8002/auth/public_key
+  url: https://localhost/auth-service/public_key
   body: none
   auth: basic
 }
@@ -17,4 +17,5 @@ auth:basic {
 
 settings {
   encodeUrl: true
+  timeout: 0
 }
