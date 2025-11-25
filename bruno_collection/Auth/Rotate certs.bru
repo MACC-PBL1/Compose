@@ -1,0 +1,21 @@
+meta {
+  name: Rotate certs
+  type: http
+  seq: 6
+}
+
+post {
+  url: https://localhost/auth-service/rotate-cert
+  body: json
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc2MDk4MzY1NX0.oZrgL3X0KK-_s_dkW_wTNzTnI4oyG0r6U_NMlyPGsC7fjGfV5em5RoB1V-wxXPNaOxiAR25IOuN5rJV7xYqzeX8CuISvpfp86VjKY8L2rc4cnt45auG6Xdv_9ajyq1OZOse5m4-E30HDZMCw_VwyEd5-HtuhyPT1eoxJpwNhPHEu71vyJ3zHwVxMAi6GNOlytPnUTRdDxbJ1UeN35XhvgvG2QxBPXYo3sSfT248WHvgyof9IiADZjHOuEGb6QXvylXJYFI7En_qVTdeK6FPXwlr1hp4L3hg956FWbl0LcXQP5paHoZFvhRXFvEJ-rZHZHkdBKaMcxyrpGw1l_DvMug
+  Content-Type: application/json
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

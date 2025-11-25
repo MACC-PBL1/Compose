@@ -1,0 +1,25 @@
+meta {
+  name: Update Address
+  type: http
+  seq: 6
+}
+
+post {
+  url: https://localhost/deliveries/address?order_id=18&address=Calle Alcalá 25, Madrid
+  body: json
+  auth: bearer
+}
+
+params:query {
+  order_id: 18
+  address: Calle Alcalá 25, Madrid
+}
+
+auth:bearer {
+  token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc2MTU5NjMwMn0.DeifOsGLVC-fIEyqIJsGgsjOt8KChFuyXNaYtfLD6iYXY-GpzoOQOd0tPgCb-KyvxSMGhHlC6QMUyyndqoJgFbBf7g5bajg0-0tEa8w5yegCGMN1kaP9gxDljOOWrkmnty2bTGcNzoS_Sc9F7pj0bQ0xDXX5ILC509-1SaUPm1uMdjCleHskw9xYP-EGvYE3ZMqnjdgXwT64KU1BXEWnTLS2gT6MDmBYsB0QG7A43xxRmz5CN1ecyjvmU5dzX-CLuOnJz-MgbDQeqYgbVJtKY33fY_CCz7_95xu0_oaqBiUKlnsyvrJsyhZRWEEIIw9_OOurv_2Ryzp_PoarqI9Jkw
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

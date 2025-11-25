@@ -1,0 +1,26 @@
+meta {
+  name: Get users
+  type: http
+  seq: 3
+}
+
+get {
+  url: https://localhost/auth-service/users
+  body: none
+  auth: inherit
+}
+
+params:query {
+  ~Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc2MDg4MjE2Mn0.Vy5OGy6CgEh8R0zObCzfwZhF4kH7rPTEqWR0eGTaSXhmAd4DuNSo-RPRoEpEnzqr6O6kh9405UuLhonPhOMVaTMUd3Lr_NSjusktv_r3ptLuTwkG1wE_zVPz4sDbmLJ3q1ACFP4E09uAWBPhPmgXfgPdTSTLU014yoU2cgsPQIK8NyNgtGJkfKGkZhWPyc9CJsomKnkEsIkPjkf6lkUM-mKGhSbDE2LGjShnogO0lGbfDyg9e92DM14_1X-aITt2YGRsyKwMBXloflw0ZrFj_v_XBHLnLAoVAi1dA7DvlxmimZ8OJxFyPYGh4T2dkUuSvgmkUFLLBObuUc9tnKMSmQ
+  ~Content-Type: application/json
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc2MTM5NTYwMX0.XFpukxsE6o_jEjLZdXahINANzVN_hVk90UJ6aBtgWuJLJE6kgHwN26LmwxRDLDz11xgGX8X-ZwDVDrDQJysxD1rYRNVT3nZymZMH7fKq9NG_sTAPupu3ZhCXYZXtak1YM8Lap4sHDEsJZo0nYkWnwUkI52FmPV2oIjCjGhPRZb3RISrSzg0BvbOpNNx0ENZCbbpNNIRgCj5ZmCkTzpD-VeQ62uFHj6yswuoZW2ay5mPZgrCWNfn46jae-o3LzpS6Ts2S_ex0FF3W2UxYmIzNvhZELZYaZcZzvTovP9ve8xmLIVqM7uR4zw77Y_hH4HZh4JE-9koH8cch5-qbhApD5g
+  Content-Type: application/json
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

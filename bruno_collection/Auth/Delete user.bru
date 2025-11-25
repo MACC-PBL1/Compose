@@ -1,0 +1,21 @@
+meta {
+  name: Delete user
+  type: http
+  seq: 8
+}
+
+delete {
+  url: https://localhost/auth-service/users/2
+  body: none
+  auth: inherit
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc2MDk4Mjg1N30.BDvl1FdgWG1UJLx9gSt4lkKSKf0wGjSp7QalTQpn3vhfmVV98QXP1kSFSvWgLlrIWaVwpGJDjOKhcU7FHU-JhYF1Br0MRo5vFWc3SodcizEE2gcw-lYg9jK5PMHKb5eOgvHdhFQNZifvEfwYjGjKHFENs48_8VX-O5YBhL8pKpxLmCOc0rah20fL5nvoifmi8cLHIbwG37ZLZZwvgnbj5LuBP9MIz0YF6IHSAebwPmY0FW7evcqZza2SZgH5B0T4qcypUYMFyAxNWC4FnnUib_kPtMCypGntfBYoyB8lFUkvhAY-UAQbKehI_35wNSGXACVt_5w_p9RO53gnaeE11Q
+  Content-Type: application/json
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
