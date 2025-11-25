@@ -28,8 +28,7 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
-      event-logger:
-        condition: service_healthy
+
       machine:
         condition: service_healthy
       order:
@@ -52,8 +51,7 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
-      event-logger:
-        condition: service_healthy
+
     volumes:
       - machine-db:/database
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -82,8 +80,7 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
-      event-logger:
-        condition: service_healthy
+
     volumes:
       - order-db:/database
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -111,8 +108,7 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
-      event-logger:
-        condition: service_healthy
+
     volumes:
       - delivery-db:/database
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -141,8 +137,7 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
-      event-logger:
-        condition: service_healthy
+
     volumes:
       - payment-db:/database
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -220,35 +215,8 @@ services:
       - "8600:8600/udp"
     command: agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0
     restart: unless-stopped
+    
 
-  event-logger:
-    build: event-logger
-    container_name: event-logger
-    depends_on:
-      influxdb:
-        condition: service_healthy
-    volumes:
-      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
-    environment:
-      INFLUXDB_URL: ${INFLUXDB_URL}
-      INFLUXDB_TOKEN: ${INFLUXDB_INIT_ADMIN_TOKEN}
-      INFLUXDB_ORG: ${INFLUXDB_INIT_ORG}
-      INFLUXDB_BUCKET: ${INFLUXDB_INIT_BUCKET}
-      RABBITMQ_HOST: ${RABBITMQ_HOST}
-      RABBITMQ_PORT: ${RABBITMQ_PORT}
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
-      RABBITMQ_USE_TLS: ${RABBITMQ_USE_TLS}
-      RABBITMQ_CA_CERT_PATH: ${RABBITMQ_CA_CERT_PATH}
-      RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
-      RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
-      RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
 volumes:
   rabbitmq_data:
   machine-db:
