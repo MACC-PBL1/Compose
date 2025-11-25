@@ -47,7 +47,7 @@ services:
       start_period: 40s
   machine:
     build: Machine/
-    container_name: machine
+    #container_name: machine
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -76,7 +76,7 @@ services:
       start_period: 40s
   order:
     build: Order/
-    container_name: order
+    #container_name: order
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -104,7 +104,7 @@ services:
       start_period: 40s
   delivery:
     build: Delivery
-    container_name: delivery
+    #container_name: delivery
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -133,7 +133,7 @@ services:
       start_period: 40s
   payment:
     build: Payment
-    container_name: payment
+    #container_name: payment
     depends_on:
       rabbitmq:
         condition: service_healthy
