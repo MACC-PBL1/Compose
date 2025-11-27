@@ -20,15 +20,14 @@ services:
       - ./ssl_setup/ssl/:/etc/rabbitmq/ssl/:ro
       - rabbitmq_data:/var/lib/rabbitmq
     restart: unless-stopped
-  client_app:
+  auth:
     build:
       context: ./
       dockerfile: Auth/client_app/Dockerfile
-    container_name: client_app
+    container_name: auth
     depends_on:
       rabbitmq:
         condition: service_healthy
-
       machine:
         condition: service_healthy
       order:
@@ -47,11 +46,9 @@ services:
       start_period: 40s
   machine:
     build: Machine/
-    #container_name: machine
     depends_on:
       rabbitmq:
         condition: service_healthy
-
     volumes:
       - machine-db:/database
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -67,6 +64,7 @@ services:
       RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
       RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+      CONSUL_PORT: ${CONSUL_PORT}
     restart: on-failure
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/machine/health"]
@@ -76,11 +74,9 @@ services:
       start_period: 40s
   order:
     build: Order/
-    #container_name: order
     depends_on:
       rabbitmq:
         condition: service_healthy
-
     volumes:
       - order-db:/database
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -96,6 +92,7 @@ services:
       RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
       RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+      CONSUL_PORT: ${CONSUL_PORT}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/order/health"]
       interval: 30s
@@ -104,11 +101,9 @@ services:
       start_period: 40s
   delivery:
     build: Delivery
-    #container_name: delivery
     depends_on:
       rabbitmq:
         condition: service_healthy
-
     volumes:
       - delivery-db:/database
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -124,6 +119,7 @@ services:
       RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
       RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+      CONSUL_PORT: ${CONSULE_PORT}
     restart: on-failure
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/deliveries/health"]
@@ -133,11 +129,9 @@ services:
       start_period: 40s
   payment:
     build: Payment
-    #container_name: payment
     depends_on:
       rabbitmq:
         condition: service_healthy
-
     volumes:
       - payment-db:/database
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -153,6 +147,7 @@ services:
       RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
       RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+      CONSUL_PORT: ${CONSUL_PORT}
     restart: on-failure
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/payment/health"]
@@ -160,7 +155,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-
   haproxy:
     image: haproxy:2.8-alpine
     container_name: haproxy
@@ -215,8 +209,6 @@ services:
       - "8600:8600/udp"
     command: agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0
     restart: unless-stopped
-    
-
 volumes:
   rabbitmq_data:
   machine-db:
