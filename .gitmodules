@@ -16,3 +16,6 @@
 [submodule "event-logger"]
 	path = event-logger
 	url = https://github.com/monolith2microservice/event-logger.git
+[submodule "log_aggregation"]
+	path = log_aggregation
+	url = https://github.com/monolith2microservice/log_aggregation.git

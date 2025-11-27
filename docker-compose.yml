@@ -16,11 +16,13 @@ services:
       retries: 5
       start_period: 10s
     volumes:
+      # - ./ssl_setup/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      # - ./ssl_setup/ssl/:/etc/rabbitmq/ssl/:ro
+      - ./ssl_setup/ssl:/etc/rabbitmq/ssl:ro
       - ./ssl_setup/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
-      - ./ssl_setup/ssl/:/etc/rabbitmq/ssl/:ro
       - rabbitmq_data:/var/lib/rabbitmq
     restart: unless-stopped
-  auth:
+  auth_service:
     build:
       context: ./
       dockerfile: Auth/client_app/Dockerfile
@@ -119,7 +121,7 @@ services:
       RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
       RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
-      CONSUL_PORT: ${CONSULE_PORT}
+      CONSUL_PORT: ${CONSUL_PORT}
     restart: on-failure
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/deliveries/health"]
@@ -162,7 +164,7 @@ services:
       - "443:443"
       - "80:80"
     depends_on:
-      client_app:
+      auth_service:
         condition: service_healthy
       machine:
         condition: service_healthy
@@ -209,6 +211,36 @@ services:
       - "8600:8600/udp"
     command: agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0
     restart: unless-stopped
+  log_aggregation:
+      build: log_aggregation/
+      container_name: log_aggregation
+      depends_on:
+        rabbitmq:
+          condition: service_healthy
+      volumes:
+        - log-aggregation-db:/database
+        - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
+      ports:
+        - "8100:8000" 
+      environment:
+        PYTHONUNBUFFERED: 1
+        SQLALCHEMY_DATABASE_URL: sqlite:////database/logs.db 
+        RABBITMQ_HOST: ${RABBITMQ_HOST}
+        RABBITMQ_PORT: ${RABBITMQ_PORT}
+        RABBITMQ_USER: ${RABBITMQ_USER}
+        RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
+        RABBITMQ_USE_TLS: ${RABBITMQ_USE_TLS}
+        RABBITMQ_CA_CERT_PATH: ${RABBITMQ_CA_CERT_PATH}
+        RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
+        RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
+        RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+      healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:8000"]
+        interval: 30s
+        timeout: 10s
+        retries: 3
+        start_period: 40s
+      restart: on-failure
 volumes:
   rabbitmq_data:
   machine-db:
@@ -216,3 +248,4 @@ volumes:
   delivery-db:
   payment-db:
   influxdb-data:
+  log-aggregation-db: 
