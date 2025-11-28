@@ -1,4 +1,4 @@
-name: microservice-structure
+name: microservices
 
 services:
   rabbitmq:
@@ -24,7 +24,6 @@ services:
     restart: unless-stopped
   auth:
     build: Auth/
-    container_name: auth
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -38,6 +37,19 @@ services:
         condition: service_healthy
     volumes:
       - ./ssl_setup/ssl/:/etc/rabbitmq/ssl/:ro
+    environment:
+      PYTHONUNBUFFERED: 1
+      SQLALCHEMY_DATABASE_URL: ${SQLALCHEMY_SQLITE_DATABASE_URI}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
+      RABBITMQ_USE_TLS: ${RABBITMQ_USE_TLS}
+      RABBITMQ_CA_CERT_PATH: ${RABBITMQ_CA_CERT_PATH}
+      RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
+      RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
+      RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+      CONSUL_PORT: ${CONSUL_PORT}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/auth/health"]
       interval: 30s
