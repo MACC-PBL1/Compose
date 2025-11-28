@@ -22,10 +22,8 @@ services:
       - ./ssl_setup/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
       - rabbitmq_data:/var/lib/rabbitmq
     restart: unless-stopped
-  auth_service:
-    build:
-      context: ./
-      dockerfile: Auth/client_app/Dockerfile
+  auth:
+    build: Auth/
     container_name: auth
     depends_on:
       rabbitmq:
@@ -41,7 +39,7 @@ services:
     volumes:
       - ./ssl_setup/ssl/:/etc/rabbitmq/ssl/:ro
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/auth-service/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/auth/health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -164,7 +162,7 @@ services:
       - "443:443"
       - "80:80"
     depends_on:
-      auth_service:
+      auth:
         condition: service_healthy
       machine:
         condition: service_healthy
