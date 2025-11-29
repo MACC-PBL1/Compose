@@ -1,0 +1,22 @@
+meta {
+  name: Refresh token
+  type: http
+  seq: 6
+}
+
+post {
+  url: https://localhost/auth/refresh
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "refresh_token": "adsf"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,28 @@
+meta {
+  name: Login
+  type: http
+  seq: 3
+}
+
+post {
+  url: https://localhost/auth/login
+  body: json
+  auth: basic
+}
+
+auth:basic {
+  username: admin@example.com
+  password: Admin1234
+}
+
+body:json {
+  {
+    "username": "admin@mondragon.edu",
+    "password": "admin"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
