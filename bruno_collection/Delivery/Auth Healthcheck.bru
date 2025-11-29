@@ -1,0 +1,16 @@
+meta {
+  name: Auth Healthcheck
+  type: http
+  seq: 3
+}
+
+get {
+  url: https://localhost/deliveries/health/auth
+  body: none
+  auth: bearer
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

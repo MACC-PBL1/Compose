@@ -1,13 +1,13 @@
 meta {
-  name: Get public key
+  name: Healthcheck
   type: http
-  seq: 4
+  seq: 1
 }
 
 get {
-  url: https://localhost/auth/key
+  url: https://localhost/machine/health
   body: none
-  auth: none
+  auth: inherit
 }
 
 settings {
