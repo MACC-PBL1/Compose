@@ -190,27 +190,6 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
-
-  influxdb:
-    image: influxdb:2.7
-    container_name: influxdb
-    ports:
-      - "8086:8086"
-    volumes:
-      - influxdb-data:/var/lib/influxdb2
-    environment:
-      INFLUXDB_INIT_MODE: ${INFLUXDB_INIT_MODE}
-      INFLUXDB_INIT_USERNAME: ${INFLUXDB_INIT_USERNAME}
-      INFLUXDB_INIT_PASSWORD: ${INFLUXDB_INIT_PASSWORD}
-      INFLUXDB_INIT_ORG: ${INFLUXDB_INIT_ORG}
-      INFLUXDB_INIT_BUCKET: ${INFLUXDB_INIT_BUCKET}
-      INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_INIT_ADMIN_TOKEN}
-    healthcheck:
-      test: ["CMD", "influx", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   consul:
     image: hashicorp/consul:1.15
     container_name: consul
@@ -274,5 +253,4 @@ volumes:
   order-db:
   delivery-db:
   payment-db:
-  influxdb-data:
   mongodb-data:
