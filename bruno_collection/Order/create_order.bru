@@ -5,13 +5,9 @@ meta {
 }
 
 post {
-  url: https://localhost/order/create_order?piece_amount=5
+  url: https://localhost/order/create
   body: json
   auth: bearer
-}
-
-params:query {
-  piece_amount: 5
 }
 
 headers {
@@ -19,7 +15,16 @@ headers {
 }
 
 auth:bearer {
-  token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc2MTU5NjMwMn0.DeifOsGLVC-fIEyqIJsGgsjOt8KChFuyXNaYtfLD6iYXY-GpzoOQOd0tPgCb-KyvxSMGhHlC6QMUyyndqoJgFbBf7g5bajg0-0tEa8w5yegCGMN1kaP9gxDljOOWrkmnty2bTGcNzoS_Sc9F7pj0bQ0xDXX5ILC509-1SaUPm1uMdjCleHskw9xYP-EGvYE3ZMqnjdgXwT64KU1BXEWnTLS2gT6MDmBYsB0QG7A43xxRmz5CN1ecyjvmU5dzX-CLuOnJz-MgbDQeqYgbVJtKY33fY_CCz7_95xu0_oaqBiUKlnsyvrJsyhZRWEEIIw9_OOurv_2Ryzp_PoarqI9Jkw
+  token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzY0NDY2NjAxLCJyb2xlIjoiYWRtaW4iLCJ0eXBlIjoiYWNjZXNzIn0.OMjHbo0HjfxT8R5086yb6a_0zPigPQOGhcbXwLVebNlhrVXqF4sxtcPnG4HIn9BoshWT359G4OfvyJ5cskOpXqgzmECWuIRMNlQmEzJ3a6aIenkY02MtJef2JeAqbCKsjcnKB0aiYJCrP5wstw-o_N3muxrs5R0NiVjm4eb2R89efwyevreRyRrIp7InfAOiWImqFVAnNwhM7qgrRzlbuW9GnWot5Q9qaopxP7fzUSzvv-DB3WS0i5hh-cH6exQn7vTeFoELgtDsC5urk3tIA_jJpa0WkJzeo-rQm4r2xY7Rqvj8G_QL_px_OE3ElLKfCEeit1VPn4YvtpcuDR8wkG8MCtMqca5QENjMy2HWFTW5rdB4qd_7bDV1ysSWWNz6t67aX9_UDD7z_mWmeXxLxIwlm6V7b187GPGZc1RYS_rQL3FaNqBezHivzR8XfheXeZDu5RUy6i1ewdTFnmnkYJC3lM8UiKmG7MmKpeSgFbaCG14qeouLiuenqnEjSrlqyWbXB-6USWiW0axbREnTQC89eQgZuOmEEmJIrSnhJlWi52hhzch9tjnnC2mUGEN2oUmK7AhiQsfVpleUNAhI2MrHJgAthRfaV5gSZzCBsEha7zA8uuev2uU0njORnz9KvAsuiQ3YeaHh6MB0_5NyTnJJ25JRnZJ0CjyA4G7xZIs
+}
+
+body:json {
+  {
+    "city": "Donostia",
+    "street": "Toki Eder",
+    "zip": "20",
+    "piece_count": 1
+  }
 }
 
 docs {

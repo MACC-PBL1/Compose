@@ -1,13 +1,17 @@
 meta {
   name: Auth Healthcheck
   type: http
-  seq: 3
+  seq: 2
 }
 
 get {
   url: https://localhost/order/health/auth
   body: none
-  auth: inherit
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzY0NDYzOTgxLCJyb2xlIjoiYWRtaW4iLCJ0eXBlIjoiYWNjZXNzIn0.enGi7aP46N-HSUOnF88G-G02SIfbiPtMJNIy_bZogZDwKuYOi-FhNVAa6td6JyLT-2rmfYdDCDJnR9hY4osZLvJmSkvZR6xE5n2SdZ6X44v2PMo68ujGM6kZiVHOPRW3JPAoZUyABPqgGFuViHMIDIRtuQts0cxDfrkD86QmJgazlYLVpwxqD4pqVX7hZAVwAyD1IYIViORYtyttQsMPyPrsIPvBTQ2KZgWDjRX_5ubX7NminGbGm3e0l5gA7h8UPTGfSxJg3p9xdsUfdRLZTNnWjyrjOStRmZ36wq1h5uyqXvb5weu4hJJ-KWIzyW0I0CcoJC9QyyCrPRUWT6oeMkdShioYtCtiN2XcM-1zyEetmocradDIhLvK-yAlCDtm_1-9ORFs9klzciHsPBKCD-0z9S5wwGSkyWUHCeciX6nO6TOl_GSmGH0StuJ7DmhClD3uUqCGI7BBZhzWYOTyfOfeN3l5XKiGc4vv0SHkrOaSuz3mPdmtTxo9TcKvYM4nxMreUw-BcbV3kRM_YYcjP69hEIhM2rjKJxwEeFtD9PvjghJDVgAk13fh2v__1luhITyVpPpErR0Ku-F8gzJb9YeDznBt6WgTpX5QyJiQT2JSucAvOvKQVbtgdKAuyzbnYnBI3kFlUvz29-eSy4eDj0Ps93dahwOH8VoX9HBPgSg
 }
 
 settings {

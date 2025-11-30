@@ -7,9 +7,14 @@ meta {
 get {
   url: https://localhost/payment/health/auth
   body: none
-  auth: inherit
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzY0NDYzODU0LCJyb2xlIjoiYWRtaW4iLCJ0eXBlIjoiYWNjZXNzIn0.QWBldyLKy2bh6QaAjSHz0m9J-C9WAlWuqcbjliBT8U4viiH8Y-l-JraoYiVhrIs2lxZllMa9p3rwMlXcc4xI_fmtD9dz5_Fsb0Q_GB-ZDdHZ3RkxBUB3ahTXKGK6sYvKi5w2FCZhFrJxbIiXjA-UJagn37lXPSJzMDwh8ZNltghYxOn4i6uql9ohZ3eSpu42VBROXCuCh8de21qgOWJLjGg4TfGquPSqMhMpXEm8vnKpooUQGKvbmQFxCiCNHBKPQw0XNO8O0w2THtpplaD74s2o5fEEkQMAzhSZXxwZeMbG5PZ05_bQSIhSbY1fPtdI-GGU8FlYgkBLZz_6-l8XbaHmw33siYx2AJ3wXDDBn3gJ_ynsaBo-kwLBklpF2UunakG1jcALK4a2m0lkZ_vDbTdovXzMkSKMQbyYDmqP20UHXkeGylaboW5ohgTTxO0kN85IFsOCaXmtlX4T33lyjjpJHoAObg7_VIJ_6Y_JWsgfrsfNgvZGkEtHdoivvn99N4M1Vgt_qq7cv-LkzqcAk-tFolz8ni5ORmFy34r09vq73hKi4VHhh89bktJDiSrK0UXwsacs8QiPoZU1UdezabKVjT8cvkKntscEMJRycN9M2W65V61QQElVPTGpSogtvNGB7RDGsU1Igp0AEAu-NnYIwduCjIVpkomjBNzLYq4
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }
