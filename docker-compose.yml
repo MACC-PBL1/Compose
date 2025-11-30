@@ -4,6 +4,8 @@ services:
     container_name: rabbitmq
     ports:
       - "15671:15671"
+      - "5672:5672"
+      - "15672:15672"
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-guest}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWD:-guest}
@@ -18,18 +20,11 @@ services:
       - ./ssl_setup/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
       - rabbitmq_data:/var/lib/rabbitmq
     restart: unless-stopped
+
   auth:
     build: Auth/
     depends_on:
       rabbitmq:
-        condition: service_healthy
-      machine:
-        condition: service_healthy
-      order:
-        condition: service_healthy
-      delivery:
-        condition: service_healthy
-      payment:
         condition: service_healthy
     volumes:
       - ./ssl_setup/ssl/:/etc/rabbitmq/ssl/:ro
@@ -52,6 +47,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+
   machine:
     build: Machine/
     depends_on:
@@ -80,6 +76,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+
   order:
     build: Order/
     depends_on:
@@ -107,8 +104,9 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+
   delivery:
-    build: Delivery
+    build: Delivery/
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -135,8 +133,9 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+
   payment:
-    build: Payment
+    build: Payment/
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -163,6 +162,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+
   haproxy:
     image: haproxy:2.8-alpine
     container_name: haproxy
@@ -190,6 +190,7 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
+
   influxdb:
     image: influxdb:2.7
     container_name: influxdb
@@ -209,6 +210,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
   consul:
     image: hashicorp/consul:1.15
     container_name: consul
@@ -217,6 +219,7 @@ services:
       - "8600:8600/udp"
     command: agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0
     restart: unless-stopped
+
   mongodb:
     image: mongo:7
     container_name: mongodb
@@ -231,41 +234,40 @@ services:
       retries: 5
       start_period: 40s
     restart: unless-stopped
+
   log_aggregation:
-      build: log_aggregation/
-      container_name: log_aggregation
-      depends_on:
-        rabbitmq:
-          condition: service_healthy
-        mongodb:                              
-          condition: service_healthy   
-      volumes:
-     #   - log-aggregation-db:/database
-        - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
-      ports:
-        - "8100:8000" 
-      environment:
-        PYTHONUNBUFFERED: 1
-     #   SQLALCHEMY_DATABASE_URL: sqlite:////database/logs.db 
-        MONGODB_URL: mongodb://mongodb:27017                    
-        MONGODB_DATABASE: log_aggregation                        
-        LOG_RETENTION_DAYS: 30                                  
-        RABBITMQ_HOST: ${RABBITMQ_HOST}
-        RABBITMQ_PORT: ${RABBITMQ_PORT}
-        RABBITMQ_USER: ${RABBITMQ_USER}
-        RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
-        RABBITMQ_USE_TLS: ${RABBITMQ_USE_TLS}
-        RABBITMQ_CA_CERT_PATH: ${RABBITMQ_CA_CERT_PATH}
-        RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
-        RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
-        RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
-      healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:8000"]
-        interval: 30s
-        timeout: 10s
-        retries: 3
-        start_period: 40s
-      restart: on-failure
+    build: Logger/
+    container_name: log_aggregation
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    volumes:
+      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
+    ports:
+      - "8100:8000"
+    environment:
+      PYTHONUNBUFFERED: 1
+      MONGODB_URL: mongodb://mongodb:27017
+      MONGODB_DATABASE: log_aggregation
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
+      RABBITMQ_USE_TLS: ${RABBITMQ_USE_TLS}
+      RABBITMQ_CA_CERT_PATH: ${RABBITMQ_CA_CERT_PATH}
+      RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
+      RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
+      RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/logs/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: on-failure
+
 volumes:
   rabbitmq_data:
   machine-db:
@@ -273,5 +275,4 @@ volumes:
   delivery-db:
   payment-db:
   influxdb-data:
-  #log-aggregation-db:
   mongodb-data:
