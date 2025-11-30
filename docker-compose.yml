@@ -261,7 +261,7 @@ services:
       RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/logs/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/logger/health"]
       interval: 30s
       timeout: 10s
       retries: 3
