@@ -19,3 +19,6 @@
 [submodule "Logger"]
 	path = Logger
 	url = https://github.com/monolith2microservice/Logger.git
+[submodule "Warehouse"]
+	path = Warehouse
+	url = https://github.com/monolith2microservice/warehouse.git
