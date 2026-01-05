@@ -1,0 +1,26 @@
+meta {
+  name: Check machine tasks
+  type: http
+  seq: 4
+}
+
+get {
+  url: https://localhost/machine/tasks
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzY0NDE2ODM2LCJyb2xlIjoiYWRtaW4iLCJ0eXBlIjoiYWNjZXNzIn0.llWVwhyJtOnbKpFyxKOupeCDdrtupbJ5TEbOvZkiGkW8_HkYArMDTR4GH6PqgrYw3OIDyK8PqAOw3AgZOYrvVUemGTXyQQVplhYIzdnlBGr8AOhF4tWLgp-hOItZNYLLCpB1kflDZjblMTab-whVlYEFu572dbZJgwbMFX8q1kvcO5E3grSW0M-F68sxLlYSaTjVu4atEUqj6QB5rWn7ZlOj7Lg_4f2ZRf9yZbaPCxOZzfljz2G-Kj0PKYTdTeVu3Iq4jSKGLa3rgjOYqp6ZH4MvSM_vttNXAyngR-4rPIJuwbQ9rI0uWXE9jcSJ-rzsN3mrZbI6LMlvfd1HrH9SLGiGOBGgZPj-S46KZOrnrSQaU9j_1N40xvfKG2BoqHgpAE-p6P3aKHTSBbDzzNIZqi87EdYkO64wPuQzcwOCnI1NA9Ma4Qs-wBCg5SeUhkkNrfZfzPVh44JNb4-oNQ5oRG5fZVMKL95ebuOkNDFfjyWyPqDy50mXUgVNx5uHf05k3FpYdgTN6MS8QAO6-RPhbhGxmIWrRjlv1ZyBMAQb9pbupYl9RBotFL3qEp_hBS4grH8Na0VPbgV3pFtCayoeZqaAz682QOOPnhH2fdwqU3gZ-Sxf1aAr-IxMaJdtoJ0-AabTFejLQMaW_LmdE6iJI1w0ed_uGPDR2ELjAzVWtRs
+}
+
+assert {
+  res.body: isJson
+  res.body.queue: isArray
+  res.body.status: isNotEmpty
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

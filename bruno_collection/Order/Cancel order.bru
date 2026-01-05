@@ -1,13 +1,17 @@
 meta {
-  name: Create Order
+  name: Cancel order
   type: http
-  seq: 2
+  seq: 6
 }
 
 post {
-  url: https://localhost/order/create
+  url: https://localhost/:order_id/cancel
   body: json
   auth: bearer
+}
+
+params:path {
+  order_id: 1
 }
 
 headers {
@@ -16,24 +20,6 @@ headers {
 
 auth:bearer {
   token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzY0NDc1MDQyLCJyb2xlIjoiYWRtaW4iLCJ0eXBlIjoiYWNjZXNzIn0.PSU-6Rc5hO0eNuAvTo3x77IFjAdIB3c2kXyh49kxdvSdIeVKshM3oKLXspYL73oGzFALqOhqjs3iPV4Qc6dXvTYP1pL0QBu3L3kYzlZ_szOuIFulejaaJCeBloh-N3Io8ivptfKKuucc8S-JAPeMVxsCc-6v1vj1Ock2e3dzb0IWssmLI3UbKzdGqdZEYdAUJxhFeBETuvtXHn_Dqj9-0a3HyHAF_uEHz-0wYa81iHi1sYN7QjCYmwHiKu1AZ_g_fJ0USTuGeU__S94AA7FFplYG5rzls0HlmSz-qdtoY97VctYHnoGHOLQMojWIAgOH9dbcdNPs8zSgEexCbcbsFPiO1UZxKuODK3xhdsv0YOoe_DdSHUc1ufLT97HcBcSZpCF6ggbu1PcoHbZIYsd60eUqhvnJPkSU0YXFEEPpEGNjhdKG2BYFR6XkBOh_jQCqnuS4uJlbXjG2zj96-PUklJbJ9ilQRxRx6r-X8RefSAV2r4b0CXcPxpCaycqLgv_DAY7YemhYvp04Rfz5_lilijfSOZyWvPAR6tuKjWHnlrhdmpyUanVlUc-htPI-zWrrQAgj5j9SUWEX1iypFzG_OgX4dH8wghtdS5co7Zf9ws74932pNE20wq4SfVwcZE1svYWMw3is87mgcqaHLKsej_mTPVYNxB-rc7_H50-d-Cw
-}
-
-body:json {
-  {
-    "city": "Donostia",
-    "street": "Toki Eder",
-    "zip": "20",
-    "pieces": [
-      {
-        "piece_type": "A",
-        "quantity": 5
-      },
-      {
-        "piece_type": "B",
-        "quantity": 5
-      }
-    ]
-  }
 }
 
 docs {
