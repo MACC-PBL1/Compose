@@ -379,6 +379,79 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+  
+  influxdb:
+    image: influxdb:2.7
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: ${INFLUXDB_INIT_MODE}
+      DOCKER_INFLUXDB_INIT_USERNAME: ${INFLUXDB_INIT_USERNAME}
+      DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUXDB_INIT_PASSWORD}
+      DOCKER_INFLUXDB_INIT_ORG: ${INFLUXDB_INIT_ORG}
+      DOCKER_INFLUXDB_INIT_BUCKET: ${INFLUXDB_INIT_BUCKET}
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_INIT_ADMIN_TOKEN}
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8086/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+
+  telegraf:
+    image: telegraf:1.29.2-alpine
+    container_name: telegraf
+    depends_on:
+      influxdb:
+        condition: service_healthy
+      haproxy:
+        condition: service_healthy
+    volumes:
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      INFLUXDB_URL: http://influxdb:8086
+      INFLUX_TOKEN: ${TELEGRAF_INFLUX_TOKEN}
+      INFLUX_ORG: ${TELEGRAF_INFLUX_ORG}
+      INFLUX_BUCKET: ${TELEGRAF_INFLUX_BUCKET}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_MANAGEMENT_PORT: 15672
+      RABBITMQ_USER: ${RABBITMQ_USER}        
+      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}  
+      HAPROXY_HOST: haproxy
+      HAPROXY_PORT: 8404
+      CONSUL_HOST: consul
+      CONSUL_PORT: ${CONSUL_PORT}
+    restart: unless-stopped
+    user: "telegraf:${DOCKER_GID}"
+
+  #  privileged: true
+
+
+  grafana:
+    image: grafana/grafana:10.2.0
+    container_name: grafana
+    ports:
+      - "3001:3000"
+    depends_on:
+      influxdb:
+        condition: service_healthy
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+      INFLUXDB_URL: ${INFLUXDB_URL}
+      INFLUXDB_INIT_ORG: ${INFLUXDB_INIT_ORG}
+      INFLUXDB_INIT_BUCKET: ${INFLUXDB_INIT_BUCKET}
+      INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_INIT_ADMIN_TOKEN}
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:rw
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:rw
+    restart: unless-stopped
 
 volumes:
   rabbitmq_data:
@@ -388,3 +461,5 @@ volumes:
   payment-db:
   warehouse-db:
   mongodb-data:
+  influxdb-data:
+  grafana-data:
