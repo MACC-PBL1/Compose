@@ -1,32 +1,22 @@
 [submodule "Machine"]
 	path = Machine
-	#url = https://github.com/monolith2microservice/Machine.git
 	url = https://github.com/MACC-PBL1/Machine.git
 [submodule "Auth"]
 	path = Auth
-	#url = https://github.com/monolith2microservice/Auth.git
 	url = https://github.com/MACC-PBL1/Auth.git
 [submodule "Order"]
 	path = Order
-	#url = https://github.com/monolith2microservice/Order.git
 	url = https://github.com/MACC-PBL1/Order.git
 [submodule "Delivery"]
 	path = Delivery
-	#url = https://github.com/monolith2microservice/Delivery.git
 	url = https://github.com/MACC-PBL1/Delivery.git
 [submodule "Payment"]
 	path = Payment
-	#url = https://github.com/monolith2microservice/Payment.git
 	url = https://github.com/MACC-PBL1/Payment.git
-[submodule "event-logger"]
-	path = event-logger
-	url = https://github.com/monolith2microservice/event-logger.git
 [submodule "Logger"]
 	path = Logger
-	#url = https://github.com/monolith2microservice/Logger.git
 	url = https://github.com/MACC-PBL1/Logger.git
 [submodule "Warehouse"]
 	path = Warehouse
-	#url = https://github.com/monolith2microservice/Warehouse.git
 	url = https://github.com/MACC-PBL1/Warehouse.git
 

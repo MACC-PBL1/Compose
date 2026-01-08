@@ -109,8 +109,6 @@ services:
       retries: 3
       start_period: 40s
 
-
-
   machine_b_1:
     build: Machine/
     environment:
@@ -141,8 +139,6 @@ services:
       retries: 3
       start_period: 40s
 
-
-
   machine_b_2:
     build: Machine/
     environment:
@@ -172,7 +168,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-
 
   order:
     build: Order/
@@ -294,6 +289,7 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
+
   consul:
     image: hashicorp/consul:1.15
     container_name: consul
@@ -318,9 +314,8 @@ services:
       start_period: 40s
     restart: unless-stopped
 
-  log_aggregation:
+  logger:
     build: Logger/
-    container_name: log_aggregation
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -333,7 +328,7 @@ services:
     environment:
       PYTHONUNBUFFERED: 1
       MONGODB_URL: mongodb://mongodb:27017
-      MONGODB_DATABASE: log_aggregation
+      MONGODB_DATABASE: logger
       RABBITMQ_HOST: ${RABBITMQ_HOST}
       RABBITMQ_PORT: ${RABBITMQ_PORT}
       RABBITMQ_USER: ${RABBITMQ_USER}
@@ -401,7 +396,6 @@ services:
       retries: 10
     restart: unless-stopped
 
-
   telegraf:
     image: telegraf:1.29.2-alpine
     container_name: telegraf
@@ -412,7 +406,6 @@ services:
         condition: service_healthy
     volumes:
       - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
       INFLUXDB_URL: http://influxdb:8086
       INFLUX_TOKEN: ${TELEGRAF_INFLUX_TOKEN}
@@ -421,16 +414,13 @@ services:
       RABBITMQ_HOST: ${RABBITMQ_HOST}
       RABBITMQ_MANAGEMENT_PORT: 15672
       RABBITMQ_USER: ${RABBITMQ_USER}        
-      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}  
+      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
       HAPROXY_HOST: haproxy
       HAPROXY_PORT: 8404
       CONSUL_HOST: consul
       CONSUL_PORT: ${CONSUL_PORT}
     restart: unless-stopped
     user: "telegraf:${DOCKER_GID}"
-
-  #  privileged: true
-
 
   grafana:
     image: grafana/grafana:10.2.0
