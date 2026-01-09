@@ -48,8 +48,11 @@ services:
       retries: 3
       start_period: 40s
 
-  machine_a_1:
+  machine_a:
     build: Machine/
+    deploy:
+      mode: replicated
+      replicas: 2
     environment:
       MACHINE_TYPE: A
       PYTHONUNBUFFERED: 1
@@ -78,69 +81,11 @@ services:
       retries: 3
       start_period: 40s
 
-
-  machine_a_2:
+  machine_b:
     build: Machine/
-    environment:
-      MACHINE_TYPE: A
-      PYTHONUNBUFFERED: 1
-      SQLALCHEMY_DATABASE_URL: ${SQLALCHEMY_SQLITE_DATABASE_URI}
-      RABBITMQ_HOST: ${RABBITMQ_HOST}
-      RABBITMQ_PORT: ${RABBITMQ_PORT}
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
-      RABBITMQ_USE_TLS: ${RABBITMQ_USE_TLS}
-      RABBITMQ_CA_CERT_PATH: ${RABBITMQ_CA_CERT_PATH}
-      RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
-      RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
-      RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
-      CONSUL_PORT: ${CONSUL_PORT}
-    volumes:
-      - machine-db:/database
-      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    restart: on-failure
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/machine/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-
-  machine_b_1:
-    build: Machine/
-    environment:
-      MACHINE_TYPE: B
-      PYTHONUNBUFFERED: 1
-      SQLALCHEMY_DATABASE_URL: ${SQLALCHEMY_SQLITE_DATABASE_URI}
-      RABBITMQ_HOST: ${RABBITMQ_HOST}
-      RABBITMQ_PORT: ${RABBITMQ_PORT}
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
-      RABBITMQ_USE_TLS: ${RABBITMQ_USE_TLS}
-      RABBITMQ_CA_CERT_PATH: ${RABBITMQ_CA_CERT_PATH}
-      RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
-      RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
-      RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
-      CONSUL_PORT: ${CONSUL_PORT}
-    volumes:
-      - machine-db:/database
-      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    restart: on-failure
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/machine/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-
-  machine_b_2:
-    build: Machine/
+    deploy:
+      mode: replicated
+      replicas: 2
     environment:
       MACHINE_TYPE: B
       PYTHONUNBUFFERED: 1
@@ -265,13 +210,9 @@ services:
     depends_on:
       auth:
         condition: service_healthy
-      machine_a_1:
+      machine_a:
         condition: service_healthy
-      machine_a_2:
-        condition: service_healthy
-      machine_b_1:
-        condition: service_healthy
-      machine_b_2:
+      machine_b:
         condition: service_healthy
       order:
         condition: service_healthy
