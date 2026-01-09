@@ -10,7 +10,7 @@ services:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-guest}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWD:-guest}
     healthcheck:
-      test: ["CMD", "rabbitmqctl", "status"]
+      test: [ "CMD", "rabbitmqctl", "status" ]
       interval: 5s
       timeout: 10s
       retries: 5
@@ -20,7 +20,6 @@ services:
       - ./ssl_setup/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
       - rabbitmq_data:/var/lib/rabbitmq
     restart: unless-stopped
-
   auth:
     build: Auth/
     depends_on:
@@ -42,12 +41,11 @@ services:
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
       CONSUL_PORT: ${CONSUL_PORT}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/auth/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/auth/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
-
   machine_a:
     build: Machine/
     deploy:
@@ -75,12 +73,11 @@ services:
         condition: service_healthy
     restart: on-failure
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/machine/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/machine/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
-
   machine_b:
     build: Machine/
     deploy:
@@ -108,12 +105,11 @@ services:
         condition: service_healthy
     restart: on-failure
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/machine/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/machine/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
-
   order:
     build: Order/
     depends_on:
@@ -136,12 +132,11 @@ services:
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
       CONSUL_PORT: ${CONSUL_PORT}
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/order/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/order/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
-
   delivery:
     build: Delivery/
     depends_on:
@@ -165,12 +160,11 @@ services:
       CONSUL_PORT: ${CONSUL_PORT}
     restart: on-failure
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/deliveries/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/deliveries/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
-
   payment:
     build: Payment/
     depends_on:
@@ -194,7 +188,66 @@ services:
       CONSUL_PORT: ${CONSUL_PORT}
     restart: on-failure
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/payment/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/payment/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+  logger:
+    build: Logger/
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    volumes:
+      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
+    ports:
+      - "8100:8000"
+    environment:
+      PYTHONUNBUFFERED: 1
+      MONGODB_URL: mongodb://mongodb:27017
+      MONGODB_DATABASE: logger
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
+      RABBITMQ_USE_TLS: ${RABBITMQ_USE_TLS}
+      RABBITMQ_CA_CERT_PATH: ${RABBITMQ_CA_CERT_PATH}
+      RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
+      RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
+      RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/logger/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: on-failure
+  warehouse:
+    build: Warehouse/
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - warehouse-db:/database
+      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
+    environment:
+      PYTHONUNBUFFERED: 1
+      SQLALCHEMY_DATABASE_URL: ${SQLALCHEMY_SQLITE_DATABASE_URI}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
+      RABBITMQ_USE_TLS: ${RABBITMQ_USE_TLS}
+      RABBITMQ_CA_CERT_PATH: ${RABBITMQ_CA_CERT_PATH}
+      RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
+      RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
+      RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+      CONSUL_PORT: ${CONSUL_PORT}
+    restart: on-failure
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/warehouse/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -225,7 +278,7 @@ services:
       - ./ssl_setup/ssl:/etc/ssl/certs:ro
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "pgrep", "haproxy"]
+      test: [ "CMD", "pgrep", "haproxy" ]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -255,67 +308,26 @@ services:
       start_period: 40s
     restart: unless-stopped
 
-  logger:
-    build: Logger/
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      mongodb:
-        condition: service_healthy
-    volumes:
-      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
-    ports:
-      - "8100:8000"
+  mariadb:
+    image: mariadb:12.1-ubi
+    container_name: mariadb
+    restart: unless-stopped
     environment:
-      PYTHONUNBUFFERED: 1
-      MONGODB_URL: mongodb://mongodb:27017
-      MONGODB_DATABASE: logger
-      RABBITMQ_HOST: ${RABBITMQ_HOST}
-      RABBITMQ_PORT: ${RABBITMQ_PORT}
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
-      RABBITMQ_USE_TLS: ${RABBITMQ_USE_TLS}
-      RABBITMQ_CA_CERT_PATH: ${RABBITMQ_CA_CERT_PATH}
-      RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
-      RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
-      RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+      # TODO: Jarri .env bezala
+      MARIADB_ROOT_PASSWORD: rootpassword
+      MARIADB_DATABASE: appdb
+      MARIADB_USER: appuser
+      MARIADB_PASSWORD: apppassword
+    # volumes:
+    #   - mariadb_data:/var/lib/mysql
+    # ports:
+    #   - "3306:3306"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/logger/health"]
-      interval: 30s
-      timeout: 10s
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
       retries: 3
-      start_period: 40s
-    restart: on-failure
-
-  warehouse:
-    build: Warehouse/
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-    volumes:
-      - warehouse-db:/database
-      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
-    environment:
-      PYTHONUNBUFFERED: 1
-      SQLALCHEMY_DATABASE_URL: ${SQLALCHEMY_SQLITE_DATABASE_URI}
-      RABBITMQ_HOST: ${RABBITMQ_HOST}
-      RABBITMQ_PORT: ${RABBITMQ_PORT}
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
-      RABBITMQ_USE_TLS: ${RABBITMQ_USE_TLS}
-      RABBITMQ_CA_CERT_PATH: ${RABBITMQ_CA_CERT_PATH}
-      RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
-      RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
-      RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
-      CONSUL_PORT: ${CONSUL_PORT}
-    restart: on-failure
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/warehouse/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-  
   influxdb:
     image: influxdb:2.7
     container_name: influxdb
@@ -331,7 +343,7 @@ services:
     volumes:
       - influxdb-data:/var/lib/influxdb2
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8086/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:8086/health" ]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -354,7 +366,7 @@ services:
       INFLUX_BUCKET: ${TELEGRAF_INFLUX_BUCKET}
       RABBITMQ_HOST: ${RABBITMQ_HOST}
       RABBITMQ_MANAGEMENT_PORT: 15672
-      RABBITMQ_USER: ${RABBITMQ_USER}        
+      RABBITMQ_USER: ${RABBITMQ_USER}
       RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
       HAPROXY_HOST: haproxy
       HAPROXY_PORT: 8404
