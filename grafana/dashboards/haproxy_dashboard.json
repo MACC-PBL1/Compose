@@ -1,11 +1,24 @@
 {
   "annotations": {
-    "list": []
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": null,
+  "id": 2,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -53,7 +66,8 @@
             ]
           },
           "unit": "reqps"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 4,
@@ -68,12 +82,15 @@
         "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
         "textMode": "value_and_name"
       },
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -116,7 +133,8 @@
             ]
           },
           "unit": "short"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 4,
@@ -131,12 +149,15 @@
         "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
         "textMode": "value_and_name"
       },
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -179,7 +200,8 @@
             ]
           },
           "unit": "short"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 4,
@@ -194,12 +216,15 @@
         "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
         "textMode": "value_and_name"
       },
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -254,7 +279,8 @@
             ]
           },
           "unit": "short"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 4,
@@ -269,12 +295,15 @@
         "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
         "textMode": "value"
       },
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -317,7 +346,8 @@
             ]
           },
           "unit": "short"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 4,
@@ -332,12 +362,15 @@
         "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
         "textMode": "value_and_name"
       },
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -382,7 +415,8 @@
             ]
           },
           "unit": "percent"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 4,
@@ -392,15 +426,20 @@
       },
       "id": 6,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": ["lastNotNull"],
+          "calcs": [
+            "lastNotNull"
+          ],
           "fields": "",
           "values": false
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true
       },
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
@@ -411,7 +450,7 @@
           "refId": "A"
         }
       ],
-      "title": "💪 Backend Health",
+      "title": "Backend Health",
       "type": "gauge"
     },
     {
@@ -440,6 +479,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -449,10 +489,11 @@
             "fillOpacity": 20,
             "gradientMode": "none",
             "hideFrom": {
+              "legend": false,
               "tooltip": false,
-              "viz": false,
-              "legend": false
+              "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -460,7 +501,14 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
@@ -473,7 +521,8 @@
             ]
           },
           "unit": "reqps"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -484,7 +533,11 @@
       "id": 10,
       "options": {
         "legend": {
-          "calcs": ["last", "mean", "max"],
+          "calcs": [
+            "last",
+            "mean",
+            "max"
+          ],
           "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
@@ -500,7 +553,7 @@
             "type": "influxdb",
             "uid": "InfluxDB"
           },
-          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"haproxy\")\n  |> filter(fn: (r) => r._field == \"req_rate\")\n  |> filter(fn: (r) => r.type == \"frontend\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)",
+          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"haproxy\")\n  |> filter(fn: (r) => r._field == \"req_rate\")\n  |> filter(fn: (r) => r.type == \"frontend\")\n  |> group()\n  |> aggregateWindow(\n    every: v.windowPeriod,\n    fn: sum,\n    createEmpty: false\n  )\n",
           "refId": "A"
         }
       ],
@@ -518,6 +571,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -527,10 +581,11 @@
             "fillOpacity": 20,
             "gradientMode": "none",
             "hideFrom": {
+              "legend": false,
               "tooltip": false,
-              "viz": false,
-              "legend": false
+              "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -538,7 +593,14 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
@@ -551,7 +613,8 @@
             ]
           },
           "unit": "short"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -562,7 +625,11 @@
       "id": 11,
       "options": {
         "legend": {
-          "calcs": ["last", "mean", "max"],
+          "calcs": [
+            "last",
+            "mean",
+            "max"
+          ],
           "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
@@ -578,7 +645,7 @@
             "type": "influxdb",
             "uid": "InfluxDB"
           },
-          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"haproxy\")\n  |> filter(fn: (r) => r._field == \"scur\")\n  |> filter(fn: (r) => r.type == \"frontend\" or r.type == \"backend\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)",
+          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"haproxy\")\n  |> filter(fn: (r) => r._field == \"scur\")\n  |> filter(fn: (r) => r.type == \"frontend\")\n  |> filter(fn: (r) => r.proxy != \"stats\")\n  |> aggregateWindow(\n    every: v.windowPeriod,\n    fn: max,\n    createEmpty: false\n  )\n",
           "refId": "A"
         }
       ],
@@ -596,6 +663,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -605,10 +673,11 @@
             "fillOpacity": 20,
             "gradientMode": "none",
             "hideFrom": {
+              "legend": false,
               "tooltip": false,
-              "viz": false,
-              "legend": false
+              "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -616,7 +685,14 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
@@ -629,7 +705,8 @@
             ]
           },
           "unit": "Bps"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -640,7 +717,11 @@
       "id": 12,
       "options": {
         "legend": {
-          "calcs": ["last", "mean", "max"],
+          "calcs": [
+            "last",
+            "mean",
+            "max"
+          ],
           "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
@@ -656,7 +737,7 @@
             "type": "influxdb",
             "uid": "InfluxDB"
           },
-          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"haproxy\")\n  |> filter(fn: (r) => r._field == \"bin\" or r._field == \"bout\")\n  |> filter(fn: (r) => r.type == \"frontend\" or r.type == \"backend\")\n  |> derivative(unit: 1s, nonNegative: true)\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)",
+          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"haproxy\")\n  |> filter(fn: (r) => r._field == \"bin\" or r._field == \"bout\")\n  |> filter(fn: (r) => r.type == \"frontend\")\n  |> filter(fn: (r) => r.proxy != \"stats\")\n  |> derivative(unit: 1s, nonNegative: true)\n  |> group(columns: [\"_field\"])\n  |> aggregateWindow(\n    every: v.windowPeriod,\n    fn: sum,\n    createEmpty: false\n  )\n",
           "refId": "A"
         }
       ],
@@ -674,6 +755,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -683,10 +765,11 @@
             "fillOpacity": 20,
             "gradientMode": "none",
             "hideFrom": {
+              "legend": false,
               "tooltip": false,
-              "viz": false,
-              "legend": false
+              "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -694,7 +777,14 @@
               "type": "linear"
             },
             "showPoints": "never",
-            "spanNulls": true
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
@@ -707,7 +797,8 @@
             ]
           },
           "unit": "ms"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
@@ -718,7 +809,11 @@
       "id": 13,
       "options": {
         "legend": {
-          "calcs": ["last", "mean", "max"],
+          "calcs": [
+            "last",
+            "mean",
+            "max"
+          ],
           "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
@@ -734,7 +829,7 @@
             "type": "influxdb",
             "uid": "InfluxDB"
           },
-          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"haproxy\")\n  |> filter(fn: (r) => r._field == \"rtime\" or r._field == \"qtime\" or r._field == \"ctime\")\n  |> filter(fn: (r) => r.type == \"backend\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)",
+          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"haproxy\")\n  |> filter(fn: (r) =>\n    r._field == \"rtime\" or\n    r._field == \"qtime\" or\n    r._field == \"ctime\"\n  )\n  |> filter(fn: (r) => r.type == \"backend\")\n  |> group(columns: [\"_field\"])\n  |> aggregateWindow(\n    every: v.windowPeriod,\n    fn: mean,\n    createEmpty: false\n  )\n",
           "refId": "A"
         }
       ],
@@ -752,352 +847,6 @@
         "x": 0,
         "y": 22
       },
-      "id": 102,
-      "title": " BACKENDS & SERVERS STATUS",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "InfluxDB"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "left",
-            "displayMode": "auto",
-            "inspect": false,
-            "filterable": true
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "status"
-            },
-            "properties": [
-              {
-                "id": "custom.displayMode",
-                "value": "color-background"
-              },
-              {
-                "id": "custom.width",
-                "value": 120
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "UP": {
-                        "color": "green",
-                        "index": 0,
-                        "text": "✅ UP"
-                      },
-                      "DOWN": {
-                        "color": "red",
-                        "index": 1,
-                        "text": "🔴 DOWN"
-                      },
-                      "MAINT": {
-                        "color": "blue",
-                        "index": 2,
-                        "text": " MAINT"
-                      },
-                      "DRAIN": {
-                        "color": "orange",
-                        "index": 3,
-                        "text": " DRAIN"
-                      }
-                    },
-                    "type": "value"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "proxy"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": " Backend"
-              },
-              {
-                "id": "custom.width",
-                "value": 180
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "sv"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": " Server"
-              },
-              {
-                "id": "custom.width",
-                "value": 150
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "scur"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": " Sessions"
-              },
-              {
-                "id": "custom.width",
-                "value": 100
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "qcur"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": " Queue"
-              },
-              {
-                "id": "custom.width",
-                "value": 90
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "rtime"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "⏱ Response Time"
-              },
-              {
-                "id": "unit",
-                "value": "ms"
-              },
-              {
-                "id": "custom.width",
-                "value": 130
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 24,
-        "x": 0,
-        "y": 23
-      },
-      "id": 20,
-      "options": {
-        "footer": {
-          "fields": "",
-          "reducer": ["sum"],
-          "show": false
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": false,
-            "displayName": " Backend"
-          }
-        ]
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "InfluxDB"
-          },
-          "query": "from(bucket: \"events\")\n  |> range(start: -1m)\n  |> filter(fn: (r) => r._measurement == \"haproxy\")\n  |> filter(fn: (r) => r._field == \"status\" or r._field == \"scur\" or r._field == \"qcur\" or r._field == \"rtime\")\n  |> filter(fn: (r) => r.type == \"server\")\n  |> last()\n  |> pivot(rowKey: [\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> keep(columns: [\"proxy\", \"sv\", \"status\", \"scur\", \"qcur\", \"rtime\"])",
-          "refId": "A"
-        }
-      ],
-      "title": "🖥️ Backend Servers Status",
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "InfluxDB"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "tooltip": false,
-              "viz": false,
-              "legend": false
-            }
-          },
-          "mappings": []
-        }
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 0,
-        "y": 33
-      },
-      "id": 21,
-      "options": {
-        "displayLabels": ["name", "percent"],
-        "legend": {
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true,
-          "values": ["value"]
-        },
-        "pieType": "donut",
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "InfluxDB"
-          },
-          "query": "from(bucket: \"events\")\n  |> range(start: -1m)\n  |> filter(fn: (r) => r._measurement == \"haproxy\")\n  |> filter(fn: (r) => r._field == \"scur\")\n  |> filter(fn: (r) => r.type == \"backend\")\n  |> last()\n  |> group(columns: [\"proxy\"])",
-          "refId": "A"
-        }
-      ],
-      "title": " Sessions by Backend",
-      "type": "piechart"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "InfluxDB"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 20,
-            "gradientMode": "none",
-            "hideFrom": {
-              "tooltip": false,
-              "viz": false,
-              "legend": false
-            },
-            "lineInterpolation": "smooth",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "short"
-        }
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 16,
-        "x": 8,
-        "y": 33
-      },
-      "id": 22,
-      "options": {
-        "legend": {
-          "calcs": ["last", "max"],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "InfluxDB"
-          },
-          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"haproxy\")\n  |> filter(fn: (r) => r._field == \"qcur\")\n  |> filter(fn: (r) => r.type == \"backend\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)",
-          "refId": "A"
-        }
-      ],
-      "title": " Queue Size by Backend",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "InfluxDB"
-      },
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 41
-      },
       "id": 103,
       "title": " ERRORS & WARNINGS",
       "type": "row"
@@ -1113,6 +862,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1122,10 +872,11 @@
             "fillOpacity": 20,
             "gradientMode": "none",
             "hideFrom": {
+              "legend": false,
               "tooltip": false,
-              "viz": false,
-              "legend": false
+              "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -1133,15 +884,21 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": true
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -1211,12 +968,15 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 42
+        "y": 23
       },
       "id": 30,
       "options": {
         "legend": {
-          "calcs": ["last", "sum"],
+          "calcs": [
+            "last",
+            "sum"
+          ],
           "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
@@ -1232,7 +992,7 @@
             "type": "influxdb",
             "uid": "InfluxDB"
           },
-          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"haproxy\")\n  |> filter(fn: (r) => r._field == \"ereq\" or r._field == \"econ\" or r._field == \"eresp\")\n  |> filter(fn: (r) => r.type == \"frontend\" or r.type == \"backend\")\n  |> derivative(unit: 1m, nonNegative: true)\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)",
+          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"haproxy\")\n  |> filter(fn: (r) =>\n    r._field == \"ereq\" or\n    r._field == \"econ\" or\n    r._field == \"eresp\"\n  )\n  |> filter(fn: (r) => r.type == \"frontend\")\n  |> derivative(unit: 1m, nonNegative: true)\n  |> group(columns: [\"_field\"])\n  |> aggregateWindow(\n    every: v.windowPeriod,\n    fn: sum,\n    createEmpty: false\n  )\n",
           "refId": "A"
         }
       ],
@@ -1250,6 +1010,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -1259,10 +1020,11 @@
             "fillOpacity": 20,
             "gradientMode": "none",
             "hideFrom": {
+              "legend": false,
               "tooltip": false,
-              "viz": false,
-              "legend": false
+              "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "smooth",
             "lineWidth": 2,
             "pointSize": 5,
@@ -1270,31 +1032,41 @@
               "type": "linear"
             },
             "showPoints": "auto",
-            "spanNulls": true
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
           },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
           "unit": "short"
-        }
+        },
+        "overrides": []
       },
       "gridPos": {
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 42
+        "y": 23
       },
       "id": 31,
       "options": {
         "legend": {
-          "calcs": ["last", "sum"],
+          "calcs": [
+            "last",
+            "sum"
+          ],
           "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
@@ -1310,7 +1082,7 @@
             "type": "influxdb",
             "uid": "InfluxDB"
           },
-          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"haproxy\")\n  |> filter(fn: (r) => r._field == \"dreq\" or r._field == \"dresp\")\n  |> filter(fn: (r) => r.type == \"frontend\" or r.type == \"backend\")\n  |> derivative(unit: 1m, nonNegative: true)\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)",
+          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"haproxy\")\n  |> filter(fn: (r) =>\n    r._field == \"dreq\" or\n    r._field == \"dresp\"\n  )\n  |> filter(fn: (r) => r.type == \"frontend\")\n  |> derivative(unit: 1m, nonNegative: true)\n  |> group(columns: [\"_field\"])\n  |> aggregateWindow(\n    every: v.windowPeriod,\n    fn: sum,\n    createEmpty: false\n  )\n",
           "refId": "A"
         }
       ],
@@ -1320,8 +1092,11 @@
   ],
   "refresh": "10s",
   "schemaVersion": 38,
-  "style": "dark",
-  "tags": ["haproxy", "load-balancer", "monitoring"],
+  "tags": [
+    "haproxy",
+    "load-balancer",
+    "monitoring"
+  ],
   "templating": {
     "list": []
   },
@@ -1330,11 +1105,17 @@
     "to": "now"
   },
   "timepicker": {
-    "refresh_intervals": ["5s", "10s", "30s", "1m", "5m"]
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m"
+    ]
   },
   "timezone": "browser",
-  "title": " HAProxy - Load Balancer Monitoring",
+  "title": "HAProxy - Load Balancer Monitoring",
   "uid": "haproxy-monitoring",
-  "version": 1,
+  "version": 7,
   "weekStart": ""
 }

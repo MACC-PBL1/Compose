@@ -17,20 +17,35 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
-  "id": 1,
-  "links": [],
-  "liveNow": false,
+  "graphTooltip": 1,
+  "id": 10,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": true,
+      "title": "RabbitMQ Management UI",
+      "tooltip": "Open RabbitMQ Web UI",
+      "type": "link",
+      "url": "http://localhost:15672"
+    }
+  ],
+  "liveNow": true,
   "panels": [
     {
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
         "y": 0
       },
-      "id": 1,
-      "title": " RabbitMQ Status",
+      "id": 100,
+      "panels": [],
+      "title": "RABBITMQ CLUSTER OVERVIEW",
       "type": "row"
     },
     {
@@ -40,25 +55,32 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 1000
               },
               {
                 "color": "red",
-                "value": 80
+                "value": 10000
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 6,
         "w": 4,
         "x": 0,
         "y": 1
@@ -67,7 +89,7 @@
       "options": {
         "colorMode": "value",
         "graphMode": "area",
-        "justifyMode": "auto",
+        "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -76,7 +98,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "value_and_name"
       },
       "pluginVersion": "10.2.0",
       "targets": [
@@ -85,11 +107,11 @@
             "type": "influxdb",
             "uid": "InfluxDB"
           },
-          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"messages\")\n  |> last()",
+          "query": "from(bucket: \"events\")\n  |> range(start: -1m)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"messages\")\n  |> last()\n  |> group()\n  |> sum()",
           "refId": "A"
         }
       ],
-      "title": " Messages",
+      "title": "Total Messages",
       "type": "stat"
     },
     {
@@ -99,25 +121,32 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 500
               },
               {
                 "color": "red",
-                "value": 80
+                "value": 5000
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 6,
         "w": 4,
         "x": 4,
         "y": 1
@@ -126,7 +155,7 @@
       "options": {
         "colorMode": "value",
         "graphMode": "area",
-        "justifyMode": "auto",
+        "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -135,16 +164,20 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "value_and_name"
       },
       "pluginVersion": "10.2.0",
       "targets": [
         {
-          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"messages_ready\")\n  |> last()",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "InfluxDB"
+          },
+          "query": "from(bucket: \"events\")\n  |> range(start: -1m)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"messages_ready\")\n  |> last()\n  |> group()\n  |> sum()",
           "refId": "A"
         }
       ],
-      "title": " Messages Ready",
+      "title": "Ready (Backlog)",
       "type": "stat"
     },
     {
@@ -154,25 +187,32 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
-                "color": "red",
-                "value": 80
+                "color": "yellow",
+                "value": 500
+              },
+              {
+                "color": "orange",
+                "value": 2000
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 6,
         "w": 4,
         "x": 8,
         "y": 1
@@ -181,7 +221,7 @@
       "options": {
         "colorMode": "value",
         "graphMode": "area",
-        "justifyMode": "auto",
+        "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -190,16 +230,20 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "value_and_name"
       },
       "pluginVersion": "10.2.0",
       "targets": [
         {
-          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"messages_unacked\")\n  |> last()",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "InfluxDB"
+          },
+          "query": "from(bucket: \"events\")\n  |> range(start: -1m)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"messages_unacked\")\n  |> last()\n  |> group()\n  |> sum()",
           "refId": "A"
         }
       ],
-      "title": " Messages Unacked",
+      "title": "Unacked (In-Flight)",
       "type": "stat"
     },
     {
@@ -209,34 +253,33 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
+                "color": "text"
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 4,
+        "h": 6,
+        "w": 3,
         "x": 12,
         "y": 1
       },
       "id": 5,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
+        "graphMode": "none",
+        "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -245,16 +288,20 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "value_and_name"
       },
       "pluginVersion": "10.2.0",
       "targets": [
         {
-          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"queues\")\n  |> last()",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "InfluxDB"
+          },
+          "query": "from(bucket: \"events\")\n  |> range(start: -1m)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"queues\")\n  |> last()\n  |> group()\n  |> sum()",
           "refId": "A"
         }
       ],
-      "title": " Queues",
+      "title": "Queues",
       "type": "stat"
     },
     {
@@ -264,34 +311,33 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
+                "color": "text"
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 4,
-        "x": 16,
+        "h": 6,
+        "w": 3,
+        "x": 15,
         "y": 1
       },
-      "id": 6,
+      "id": 10,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
+        "graphMode": "none",
+        "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -300,12 +346,82 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "value_and_name"
       },
       "pluginVersion": "10.2.0",
       "targets": [
         {
-          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"connections\")\n  |> last()",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "InfluxDB"
+          },
+          "query": "from(bucket: \"events\")\n  |> range(start: -1m)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"consumers\")\n  |> last()\n  |> group()\n  |> sum()",
+          "refId": "A"
+        }
+      ],
+      "title": "Consumers",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "InfluxDB"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "yellow",
+                "value": 50
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 18,
+        "y": 1
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value_and_name"
+      },
+      "pluginVersion": "10.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "InfluxDB"
+          },
+          "query": "from(bucket: \"events\")\n  |> range(start: -1m)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"connections\")\n  |> last()\n  |> group()\n  |> sum()",
           "refId": "A"
         }
       ],
@@ -319,34 +435,33 @@
       },
       "fieldConfig": {
         "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
+                "color": "text"
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
-        "w": 4,
-        "x": 20,
+        "h": 6,
+        "w": 3,
+        "x": 21,
         "y": 1
       },
       "id": 7,
       "options": {
         "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
+        "graphMode": "none",
+        "justifyMode": "center",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -355,17 +470,32 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "value_and_name"
       },
       "pluginVersion": "10.2.0",
       "targets": [
         {
-          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"channels\")\n  |> last()",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "InfluxDB"
+          },
+          "query": "from(bucket: \"events\")\n  |> range(start: -1m)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"channels\")\n  |> last()\n  |> group()\n  |> sum()",
           "refId": "A"
         }
       ],
-      "title": " Channels",
+      "title": "Channels",
       "type": "stat"
+    },
+    {
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "id": 101,
+      "title": "MESSAGE THROUGHPUT & PERFORMANCE",
+      "type": "row"
     },
     {
       "datasource": {
@@ -385,22 +515,22 @@
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
-            "spanNulls": false,
+            "showPoints": "never",
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -414,44 +544,110 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
-              },
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "msg/s"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Published"
+            },
+            "properties": [
               {
-                "color": "red",
-                "value": 80
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Delivered"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Acknowledged"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
               }
             ]
           }
-        },
-        "overrides": []
+        ]
       },
       "gridPos": {
-        "h": 6,
+        "h": 9,
         "w": 12,
         "x": 0,
-        "y": 6
+        "y": 8
       },
       "id": 8,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
-          "mode": "single",
-          "sort": "none"
+          "mode": "multi",
+          "sort": "desc"
         }
       },
       "targets": [
         {
-          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"messages_published\")\n  |> derivative(unit: 1s, nonNegative: true)",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "InfluxDB"
+          },
+          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"messages_published\")\n  |> derivative(unit: 1s, nonNegative: true)\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ r with _value: r._value, _field: \"Published\" }))",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "InfluxDB"
+          },
+          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"messages_delivered\")\n  |> derivative(unit: 1s, nonNegative: true)\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ r with _value: r._value, _field: \"Delivered\" }))",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "InfluxDB"
+          },
+          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"messages_acknowledged\")\n  |> derivative(unit: 1s, nonNegative: true)\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ r with _value: r._value, _field: \"Acknowledged\" }))",
+          "refId": "C"
         }
       ],
-      "title": "Messages Published / sec",
+      "title": "Message Rate (Pub/Deliver/Ack)",
       "type": "timeseries"
     },
     {
@@ -472,7 +668,137 @@
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 0,
+            "fillOpacity": 20,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "normal"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Ready"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Unacked"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "InfluxDB"
+          },
+          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"messages_ready\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"Ready\" }))",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "InfluxDB"
+          },
+          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"messages_unacked\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"Unacked\" }))",
+          "refId": "B"
+        }
+      ],
+      "title": "Message Queue Depth (Ready vs Unacked)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "InfluxDB"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -480,14 +806,14 @@
               "viz": false
             },
             "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
             "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "auto",
-            "spanNulls": false,
+            "showPoints": "never",
+            "spanNulls": true,
             "stacking": {
               "group": "A",
               "mode": "none"
@@ -501,61 +827,283 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
-              },
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Connections"
+            },
+            "properties": [
               {
-                "color": "red",
-                "value": 80
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Channels"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Consumers"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
               }
             ]
           }
-        },
-        "overrides": []
+        ]
       },
       "gridPos": {
-        "h": 6,
+        "h": 9,
         "w": 12,
-        "x": 12,
-        "y": 6
+        "x": 0,
+        "y": 17
       },
-      "id": 9,
+      "id": 12,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
+          "calcs": [
+            "mean",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
           "placement": "bottom",
           "showLegend": true
         },
         "tooltip": {
-          "mode": "single",
-          "sort": "none"
+          "mode": "multi",
+          "sort": "desc"
         }
       },
       "targets": [
         {
-          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"messages_delivered\")\n  |> derivative(unit: 1s, nonNegative: true)",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "InfluxDB"
+          },
+          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"connections\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"Connections\" }))",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "InfluxDB"
+          },
+          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"channels\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"Channels\" }))",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "InfluxDB"
+          },
+          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"consumers\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"Consumers\" }))",
+          "refId": "C"
         }
       ],
-      "title": " Messages Delivered / sec",
+      "title": "Client Connections & Consumers",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 26
+      },
+      "id": 102,
+      "panels": [],
+      "title": "ERRORS & WARNINGS",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "InfluxDB"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 20,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green"
+              }
+            ]
+          },
+          "unit": "msg/s"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Unroutable"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Redelivered"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 27
+      },
+      "id": 13,
+      "options": {
+        "legend": {
+          "calcs": [
+            "sum",
+            "max",
+            "last"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "InfluxDB"
+          },
+          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"return_unroutable\")\n  |> derivative(unit: 1s, nonNegative: true)\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"Unroutable\" }))",
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "InfluxDB"
+          },
+          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"rabbitmq_overview\")\n  |> filter(fn: (r) => r._field == \"messages_redelivered\")\n  |> derivative(unit: 1s, nonNegative: true)\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)\n  |> map(fn: (r) => ({ r with _field: \"Redelivered\" }))",
+          "refId": "B"
+        }
+      ],
+      "title": "Unroutable & Redelivered Messages",
       "type": "timeseries"
     }
   ],
   "refresh": "10s",
   "schemaVersion": 38,
-  "tags": [],
+  "tags": [
+    "rabbitmq",
+    "messaging",
+    "queue",
+    "monitoring"
+  ],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-1h",
     "to": "now"
   },
-  "timepicker": {},
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m"
+    ]
+  },
   "timezone": "browser",
-  "title": "RabbitMQ Overview",
-  "uid": "rabbitmq-influx",
-  "version": 3,
+  "title": "RabbitMQ - Enhanced Overview",
+  "uid": "rabbitmq-enhanced",
+  "version": 4,
   "weekStart": ""
 }

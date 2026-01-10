@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 6,
+  "id": 8,
   "links": [],
   "liveNow": true,
   "panels": [
@@ -70,8 +70,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
-        "w": 4,
+        "h": 6,
+        "w": 6,
         "x": 0,
         "y": 1
       },
@@ -133,9 +133,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 4,
+        "h": 6,
+        "w": 6,
+        "x": 6,
         "y": 1
       },
       "id": 2,
@@ -196,9 +196,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 8,
+        "h": 6,
+        "w": 6,
+        "x": 12,
         "y": 1
       },
       "id": 3,
@@ -241,73 +241,6 @@
             "mode": "thresholds"
           },
           "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "blue",
-                "value": null
-              },
-              {
-                "color": "green",
-                "value": 5
-              },
-              {
-                "color": "super-light-green",
-                "value": 10
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 12,
-        "y": 1
-      },
-      "id": 4,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "center",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value_and_name"
-      },
-      "pluginVersion": "10.2.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "InfluxDB"
-          },
-          "query": "from(bucket: \"events\")\n  |> range(start: -1m)\n  |> filter(fn: (r) => r._measurement == \"consul_health_checks\")\n  |> filter(fn: (r) => r.service_name != \"\")\n  |> last()\n  |> group(columns: [\"service_name\"])\n  |> distinct(column: \"service_name\")\n  |> count()",
-          "refId": "A"
-        }
-      ],
-      "title": "Services",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "InfluxDB"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
           "max": 100,
           "min": 0,
           "thresholds": {
@@ -332,9 +265,9 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 16,
+        "h": 6,
+        "w": 6,
+        "x": 18,
         "y": 1
       },
       "id": 10,
@@ -371,100 +304,11 @@
         "type": "influxdb",
         "uid": "InfluxDB"
       },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 4,
-        "x": 20,
-        "y": 1
-      },
-      "id": 20,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "InfluxDB"
-          },
-          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"docker_container_cpu\")\n  |> filter(fn: (r) => r._field == \"usage_percent\")\n  |> filter(fn: (r) => r.container_name == \"consul\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)",
-          "refId": "A"
-        }
-      ],
-      "title": "Consul CPU",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "InfluxDB"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 5
+        "y": 7
       },
       "id": 101,
       "title": "HEALTH CHECKS EVOLUTION",
@@ -573,10 +417,10 @@
         ]
       },
       "gridPos": {
-        "h": 8,
+        "h": 10,
         "w": 24,
         "x": 0,
-        "y": 6
+        "y": 8
       },
       "id": 5,
       "options": {
@@ -601,7 +445,7 @@
             "type": "influxdb",
             "uid": "InfluxDB"
           },
-          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"consul_health_checks\")\n  |> filter(fn: (r) => r._field == \"passing\" or r._field == \"warning\" or r._field == \"critical\")\n  |> aggregateWindow(every: v.windowPeriod, fn: sum, createEmpty: false)",
+          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"consul_health_checks\")\n  |> filter(fn: (r) =>\n    r._field == \"passing\" or\n    r._field == \"warning\" or\n    r._field == \"critical\"\n  )\n  |> group(columns: [\"_field\"])\n  |> aggregateWindow(\n    every: v.windowPeriod,\n    fn: sum,\n    createEmpty: false\n  )",
           "refId": "A"
         }
       ],
@@ -609,6 +453,7 @@
       "type": "timeseries"
     },
     {
+      "collapsed": false,
       "datasource": {
         "type": "influxdb",
         "uid": "InfluxDB"
@@ -617,210 +462,79 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 14
-      },
-      "id": 102,
-      "title": "CONTAINER METRICS",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "InfluxDB"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "bytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 0,
-        "y": 15
-      },
-      "id": 21,
-      "options": {
-        "legend": {
-          "calcs": [
-            "last",
-            "max"
-          ],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "InfluxDB"
-          },
-          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"docker_container_mem\")\n  |> filter(fn: (r) => r._field == \"usage\")\n  |> filter(fn: (r) => r.container_name == \"consul\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)",
-          "refId": "A"
-        }
-      ],
-      "title": "Memory Usage",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "InfluxDB"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "smooth",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "Bps"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 12,
-        "y": 15
-      },
-      "id": 22,
-      "options": {
-        "legend": {
-          "calcs": [
-            "last",
-            "max"
-          ],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "InfluxDB"
-          },
-          "query": "from(bucket: \"events\")\n  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)\n  |> filter(fn: (r) => r._measurement == \"docker_container_net\")\n  |> filter(fn: (r) => r._field == \"rx_bytes\" or r._field == \"tx_bytes\")\n  |> filter(fn: (r) => r.container_name == \"consul\")\n  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)\n  |> derivative(unit: 1s, nonNegative: true)",
-          "refId": "A"
-        }
-      ],
-      "title": "Network I/O",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "InfluxDB"
-      },
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 22
+        "y": 18
       },
       "id": 103,
+      "panels": [],
       "title": "SERVICES DETAILED STATUS",
       "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "InfluxDB"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 0,
+        "y": 19
+      },
+      "id": 30,
+      "options": {
+        "displayLabels": [
+          "name",
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "InfluxDB"
+          },
+          "query": "from(bucket: \"events\")\n  |> range(start: -1m)\n  |> filter(fn: (r) => r._measurement == \"consul_health_checks\")\n  |> filter(fn: (r) => r._field == \"passing\")\n  |> filter(fn: (r) => r.service_name != \"\")\n  |> last()\n  |> group(columns: [\"service_name\"])\n  |> count()",
+          "refId": "A"
+        }
+      ],
+      "title": "Services Distribution",
+      "type": "piechart"
     },
     {
       "datasource": {
@@ -972,10 +686,10 @@
         ]
       },
       "gridPos": {
-        "h": 12,
-        "w": 24,
-        "x": 0,
-        "y": 23
+        "h": 10,
+        "w": 16,
+        "x": 8,
+        "y": 19
       },
       "id": 6,
       "options": {
@@ -992,7 +706,7 @@
         "sortBy": [
           {
             "desc": false,
-            "displayName": "🚀 Service"
+            "displayName": "Service"
           }
         ]
       },
@@ -1008,160 +722,6 @@
         }
       ],
       "title": "Services Status - Detailed View",
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "InfluxDB"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": []
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 0,
-        "y": 35
-      },
-      "id": 30,
-      "options": {
-        "displayLabels": [
-          "name",
-          "percent"
-        ],
-        "legend": {
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true,
-          "values": [
-            "value"
-          ]
-        },
-        "pieType": "donut",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "InfluxDB"
-          },
-          "query": "from(bucket: \"events\")\n  |> range(start: -1m)\n  |> filter(fn: (r) => r._measurement == \"consul_health_checks\")\n  |> filter(fn: (r) => r._field == \"passing\")\n  |> filter(fn: (r) => r.service_name != \"\")\n  |> last()\n  |> group(columns: [\"service_name\"])\n  |> count()",
-          "refId": "A"
-        }
-      ],
-      "title": " Services Distribution",
-      "type": "piechart"
-    },
-    {
-      "datasource": {
-        "type": "influxdb",
-        "uid": "InfluxDB"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "left",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": false,
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green"
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "status"
-            },
-            "properties": [
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "passing": {
-                        "color": "green",
-                        "index": 0,
-                        "text": "✅ PASSING"
-                      }
-                    },
-                    "type": "value"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 16,
-        "x": 8,
-        "y": 35
-      },
-      "id": 31,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
-        "showHeader": true
-      },
-      "pluginVersion": "10.2.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "influxdb",
-            "uid": "InfluxDB"
-          },
-          "query": "from(bucket: \"events\")\n  |> range(start: -1m)\n  |> filter(fn: (r) => r._measurement == \"consul_health_checks\")\n  |> filter(fn: (r) => r._field == \"passing\")\n  |> filter(fn: (r) => r.check_id == \"serfHealth\")\n  |> last()\n  |> group()\n  |> keep(columns: [\"node\", \"check_name\", \"status\", \"environment\"])",
-          "refId": "A"
-        }
-      ],
-      "title": " Node Health Checks",
       "type": "table"
     }
   ],
@@ -1190,8 +750,8 @@
     ]
   },
   "timezone": "browser",
-  "title": "Consul - Monitoring Dashboard",
-  "uid": "consul-monitoring-prod",
-  "version": 10,
+  "title": "Consul - Monitoring Dashboard2",
+  "uid": "consul-monitoring-prod2",
+  "version": 1,
   "weekStart": ""
 }
