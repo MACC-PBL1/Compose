@@ -750,7 +750,7 @@
     ]
   },
   "timezone": "browser",
-  "title": "Consul - Monitoring Dashboard2",
+  "title": "Consul - Monitoring Services",
   "uid": "consul-monitoring-prod2",
   "version": 1,
   "weekStart": ""
