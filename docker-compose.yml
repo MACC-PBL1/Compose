@@ -1,35 +1,16 @@
 services:
-  rabbitmq:
-    image: rabbitmq:4-management
-    container_name: rabbitmq
-    ports:
-      - "15671:15671"
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-guest}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWD:-guest}
-    healthcheck:
-      test: [ "CMD", "rabbitmqctl", "status" ]
-      interval: 5s
-      timeout: 10s
-      retries: 5
-      start_period: 10s
-    volumes:
-      - ./ssl_setup/ssl:/etc/rabbitmq/ssl:ro
-      - ./ssl_setup/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
-      - rabbitmq_data:/var/lib/rabbitmq
-    restart: unless-stopped
   auth:
-    build: Auth/
+    build: ../Auth/
     depends_on:
       rabbitmq:
+        condition: service_healthy
+      mariadb:
         condition: service_healthy
     volumes:
       - ./ssl_setup/ssl/:/etc/rabbitmq/ssl/:ro
     environment:
       PYTHONUNBUFFERED: 1
-      SQLALCHEMY_DATABASE_URL: ${SQLALCHEMY_SQLITE_DATABASE_URI}
+      SQLALCHEMY_DATABASE_URL: "mysql+aiomysql://${MARIADB_USER}:${MARIADB_PASSWORD}@${MARIADB_HOST}:${MARIADB_PORT}/${MARIADB_DATABASE}"
       RABBITMQ_HOST: ${RABBITMQ_HOST}
       RABBITMQ_PORT: ${RABBITMQ_PORT}
       RABBITMQ_USER: ${RABBITMQ_USER}
@@ -47,14 +28,14 @@ services:
       retries: 3
       start_period: 40s
   machine_a:
-    build: Machine/
+    build: ../Machine/
     deploy:
       mode: replicated
       replicas: 2
     environment:
       MACHINE_TYPE: A
       PYTHONUNBUFFERED: 1
-      SQLALCHEMY_DATABASE_URL: ${SQLALCHEMY_SQLITE_DATABASE_URI}
+      SQLALCHEMY_DATABASE_URL: "mysql+aiomysql://${MARIADB_USER}:${MARIADB_PASSWORD}@${MARIADB_HOST}:${MARIADB_PORT}/${MARIADB_DATABASE}"
       RABBITMQ_HOST: ${RABBITMQ_HOST}
       RABBITMQ_PORT: ${RABBITMQ_PORT}
       RABBITMQ_USER: ${RABBITMQ_USER}
@@ -70,6 +51,8 @@ services:
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
     depends_on:
       rabbitmq:
+        condition: service_healthy
+      mariadb:
         condition: service_healthy
     restart: on-failure
     healthcheck:
@@ -79,14 +62,14 @@ services:
       retries: 3
       start_period: 40s
   machine_b:
-    build: Machine/
+    build: ../Machine/
     deploy:
       mode: replicated
       replicas: 2
     environment:
       MACHINE_TYPE: B
       PYTHONUNBUFFERED: 1
-      SQLALCHEMY_DATABASE_URL: ${SQLALCHEMY_SQLITE_DATABASE_URI}
+      SQLALCHEMY_DATABASE_URL: "mysql+aiomysql://${MARIADB_USER}:${MARIADB_PASSWORD}@${MARIADB_HOST}:${MARIADB_PORT}/${MARIADB_DATABASE}"
       RABBITMQ_HOST: ${RABBITMQ_HOST}
       RABBITMQ_PORT: ${RABBITMQ_PORT}
       RABBITMQ_USER: ${RABBITMQ_USER}
@@ -96,12 +79,15 @@ services:
       RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
       RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+      CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
     volumes:
       - machine-db:/database
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
     depends_on:
       rabbitmq:
+        condition: service_healthy
+      mariadb:
         condition: service_healthy
     restart: on-failure
     healthcheck:
@@ -111,16 +97,18 @@ services:
       retries: 3
       start_period: 40s
   order:
-    build: Order/
+    build: ../Order/
     depends_on:
       rabbitmq:
+        condition: service_healthy
+      mariadb:
         condition: service_healthy
     volumes:
       - order-db:/database
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
     environment:
       PYTHONUNBUFFERED: 1
-      SQLALCHEMY_DATABASE_URL: ${SQLALCHEMY_SQLITE_DATABASE_URI}
+      SQLALCHEMY_DATABASE_URL: "mysql+aiomysql://${MARIADB_USER}:${MARIADB_PASSWORD}@${MARIADB_HOST}:${MARIADB_PORT}/${MARIADB_DATABASE}"
       RABBITMQ_HOST: ${RABBITMQ_HOST}
       RABBITMQ_PORT: ${RABBITMQ_PORT}
       RABBITMQ_USER: ${RABBITMQ_USER}
@@ -138,16 +126,18 @@ services:
       retries: 3
       start_period: 40s
   delivery:
-    build: Delivery/
+    build: ../Delivery/
     depends_on:
       rabbitmq:
+        condition: service_healthy
+      mariadb:
         condition: service_healthy
     volumes:
       - delivery-db:/database
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
     environment:
       PYTHONUNBUFFERED: 1
-      SQLALCHEMY_DATABASE_URL: ${SQLALCHEMY_SQLITE_DATABASE_URI}
+      SQLALCHEMY_DATABASE_URL: "mysql+aiomysql://${MARIADB_USER}:${MARIADB_PASSWORD}@${MARIADB_HOST}:${MARIADB_PORT}/${MARIADB_DATABASE}"
       RABBITMQ_HOST: ${RABBITMQ_HOST}
       RABBITMQ_PORT: ${RABBITMQ_PORT}
       RABBITMQ_USER: ${RABBITMQ_USER}
@@ -166,16 +156,18 @@ services:
       retries: 3
       start_period: 40s
   payment:
-    build: Payment/
+    build: ../Payment/
     depends_on:
       rabbitmq:
+        condition: service_healthy
+      mariadb:
         condition: service_healthy
     volumes:
       - payment-db:/database
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
     environment:
       PYTHONUNBUFFERED: 1
-      SQLALCHEMY_DATABASE_URL: ${SQLALCHEMY_SQLITE_DATABASE_URI}
+      SQLALCHEMY_DATABASE_URL: "mysql+aiomysql://${MARIADB_USER}:${MARIADB_PASSWORD}@${MARIADB_HOST}:${MARIADB_PORT}/${MARIADB_DATABASE}"
       RABBITMQ_HOST: ${RABBITMQ_HOST}
       RABBITMQ_PORT: ${RABBITMQ_PORT}
       RABBITMQ_USER: ${RABBITMQ_USER}
@@ -186,7 +178,6 @@ services:
       RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
       CONSUL_PORT: ${CONSUL_PORT}
-    restart: on-failure
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/payment/health" ]
       interval: 30s
@@ -194,9 +185,11 @@ services:
       retries: 3
       start_period: 40s
   logger:
-    build: Logger/
+    build: ../Logger/
     depends_on:
       rabbitmq:
+        condition: service_healthy
+      mariadb:
         condition: service_healthy
       mongodb:
         condition: service_healthy
@@ -223,18 +216,19 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    restart: on-failure
   warehouse:
-    build: Warehouse/
+    build: ../Warehouse/
     depends_on:
       rabbitmq:
+        condition: service_healthy
+      mariadb:
         condition: service_healthy
     volumes:
       - warehouse-db:/database
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
     environment:
       PYTHONUNBUFFERED: 1
-      SQLALCHEMY_DATABASE_URL: ${SQLALCHEMY_SQLITE_DATABASE_URI}
+      SQLALCHEMY_DATABASE_URL: "mysql+aiomysql://${MARIADB_USER}:${MARIADB_PASSWORD}@${MARIADB_HOST}:${MARIADB_PORT}/${MARIADB_DATABASE}"
       RABBITMQ_HOST: ${RABBITMQ_HOST}
       RABBITMQ_PORT: ${RABBITMQ_PORT}
       RABBITMQ_USER: ${RABBITMQ_USER}
@@ -245,14 +239,33 @@ services:
       RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
       CONSUL_PORT: ${CONSUL_PORT}
-    restart: on-failure
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/warehouse/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
-
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: rabbitmq
+    ports:
+      - "15671:15671"
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-guest}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWD:-guest}
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 5s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+    volumes:
+      - ./ssl_setup/ssl:/etc/rabbitmq/ssl:ro
+      - ./ssl_setup/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - rabbitmq_data:/var/lib/rabbitmq
+    restart: unless-stopped
   haproxy:
     image: haproxy:2.8-alpine
     container_name: haproxy
@@ -313,89 +326,20 @@ services:
     container_name: mariadb
     restart: unless-stopped
     environment:
-      # TODO: Jarri .env bezala
-      MARIADB_ROOT_PASSWORD: rootpassword
-      MARIADB_DATABASE: appdb
-      MARIADB_USER: appuser
-      MARIADB_PASSWORD: apppassword
-    # volumes:
-    #   - mariadb_data:/var/lib/mysql
-    # ports:
-    #   - "3306:3306"
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${MARIADB_DATABASE}
+      MARIADB_USER: ${MARIADB_USER}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD}
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       start_period: 10s
       interval: 10s
       timeout: 5s
       retries: 3
-  influxdb:
-    image: influxdb:2.7
-    container_name: influxdb
-    ports:
-      - "8086:8086"
-    environment:
-      DOCKER_INFLUXDB_INIT_MODE: ${INFLUXDB_INIT_MODE}
-      DOCKER_INFLUXDB_INIT_USERNAME: ${INFLUXDB_INIT_USERNAME}
-      DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUXDB_INIT_PASSWORD}
-      DOCKER_INFLUXDB_INIT_ORG: ${INFLUXDB_INIT_ORG}
-      DOCKER_INFLUXDB_INIT_BUCKET: ${INFLUXDB_INIT_BUCKET}
-      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_INIT_ADMIN_TOKEN}
-    volumes:
-      - influxdb-data:/var/lib/influxdb2
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8086/health" ]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-    restart: unless-stopped
-
-  telegraf:
-    image: telegraf:1.29.2-alpine
-    container_name: telegraf
-    depends_on:
-      influxdb:
-        condition: service_healthy
-      haproxy:
-        condition: service_healthy
-    volumes:
-      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
-    environment:
-      INFLUXDB_URL: http://influxdb:8086
-      INFLUX_TOKEN: ${TELEGRAF_INFLUX_TOKEN}
-      INFLUX_ORG: ${TELEGRAF_INFLUX_ORG}
-      INFLUX_BUCKET: ${TELEGRAF_INFLUX_BUCKET}
-      RABBITMQ_HOST: ${RABBITMQ_HOST}
-      RABBITMQ_MANAGEMENT_PORT: 15672
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
-      HAPROXY_HOST: haproxy
-      HAPROXY_PORT: 8404
-      CONSUL_HOST: consul
-      CONSUL_PORT: ${CONSUL_PORT}
-    restart: unless-stopped
-    user: "telegraf:${DOCKER_GID}"
-
-  grafana:
-    image: grafana/grafana:10.2.0
-    container_name: grafana
-    ports:
-      - "3001:3000"
-    depends_on:
-      influxdb:
-        condition: service_healthy
-    environment:
-      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER}
-      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
-      INFLUXDB_URL: ${INFLUXDB_URL}
-      INFLUXDB_INIT_ORG: ${INFLUXDB_INIT_ORG}
-      INFLUXDB_INIT_BUCKET: ${INFLUXDB_INIT_BUCKET}
-      INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_INIT_ADMIN_TOKEN}
-    volumes:
-      - grafana-data:/var/lib/grafana
-      - ./grafana/provisioning:/etc/grafana/provisioning:rw
-      - ./grafana/dashboards:/var/lib/grafana/dashboards:rw
-    restart: unless-stopped
-
 volumes:
   rabbitmq_data:
   machine-db:
@@ -404,5 +348,4 @@ volumes:
   payment-db:
   warehouse-db:
   mongodb-data:
-  influxdb-data:
-  grafana-data:
+  mariadb-data:
