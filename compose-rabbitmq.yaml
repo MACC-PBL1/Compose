@@ -1,4 +1,4 @@
-service:
+services:
   rabbitmq:
     image: rabbitmq:4-management
     container_name: rabbitmq

@@ -1,4 +1,4 @@
-service:
+services:
   consul:
     image: hashicorp/consul:1.15
     container_name: consul
