@@ -1,0 +1,26 @@
+service:
+  haproxy:
+    image: haproxy:2.8-alpine
+    container_name: haproxy
+    ports:
+      - "443:443"
+      - "80:80"
+      - "8404:8404"
+    depends_on:
+      payment:
+        condition: service_healthy
+      delivery:
+        condition: service_healthy
+    environment:
+      AUTH_HOST: ${AUTH_HOST}
+      OTHERS_HOST: ${OTHERS_HOST}
+    volumes:
+      - ./haproxy/nat.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - ./ssl/:/etc/ssl/certs:ro
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "pgrep", "haproxy" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

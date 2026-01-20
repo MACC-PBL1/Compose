@@ -20,6 +20,7 @@ service:
       RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
       RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+      CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/auth/health" ]
@@ -27,39 +28,6 @@ service:
       timeout: 10s
       retries: 3
       start_period: 40s
-  logger:
-    build: Logger/
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      mariadb:
-        condition: service_healthy
-      mongodb:
-        condition: service_healthy
-    volumes:
-      - ./ssl/:${RABBITMQ_CERT_PATH}:ro
-    ports:
-      - "8100:8000"
-    environment:
-      PYTHONUNBUFFERED: 1
-      MONGODB_URL: mongodb://mongodb:27017
-      MONGODB_DATABASE: logger
-      RABBITMQ_HOST: ${RABBITMQ_HOST}
-      RABBITMQ_PORT: ${RABBITMQ_PORT}
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
-      RABBITMQ_USE_TLS: ${RABBITMQ_USE_TLS}
-      RABBITMQ_CA_CERT_PATH: ${RABBITMQ_CA_CERT_PATH}
-      RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
-      RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
-      RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8000/logger/health" ]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-
   haproxy:
     image: haproxy:2.8-alpine
     container_name: haproxy
@@ -73,7 +41,7 @@ service:
       logger:
         condition: service_healthy
     volumes:
-      - ./haproxy/auth-logs.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - ./haproxy/auth.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
       - ./ssl/:/etc/ssl/certs:ro
     restart: unless-stopped
     healthcheck:
