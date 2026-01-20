@@ -4,7 +4,7 @@ services:
     container_name: rabbitmq
     ports:
       - "15671:15671"
-      - "5672:5672"
+      - "5671:5671"
       - "15672:15672"
     environment:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-guest}
@@ -18,4 +18,7 @@ services:
     volumes:
       - ./ssl/:/etc/rabbitmq/ssl:ro
       - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
-      - rabbitmq_data:/var/lib/rabbitmq
+      - rabbitmq-data:/var/lib/rabbitmq
+
+volumes:
+  rabbitmq-data:

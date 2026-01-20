@@ -223,20 +223,17 @@ services:
       retries: 3
       start_period: 40s
   haproxy:
-    image: haproxy:2.8-alpine
-    container_name: haproxy
+    build: haproxy/
     ports:
       - "443:443"
       - "80:80"
       - "8404:8404"
-    depends_on:
-      auth:
-        condition: service_healthy
-      logger:
-        condition: service_healthy
+    environment:
+      CONSUL_HOST: ${CONSUL_HOST}
+      CONSUL_PORT: ${CONSUL_PORT}
     volumes:
-      - ./haproxy/auth.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
-      - ./ssl/:/etc/ssl/certs:ro
+      - ./haproxy/nat.cfg.template:/usr/local/etc/haproxy/haproxy.cfg.template:ro
+      - ./ssl:/etc/ssl/certs:ro
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "pgrep", "haproxy" ]
