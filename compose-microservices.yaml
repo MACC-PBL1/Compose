@@ -1,8 +1,9 @@
 services:
   machine_a:
     build: Machine/
-    ports:
-      - "8000:8000"
+    deploy:
+      mode: replicated
+      replicas: 2
     environment:
       MACHINE_TYPE: A
       PYTHONUNBUFFERED: 1
@@ -32,8 +33,9 @@ services:
       start_period: 40s
   machine_b:
     build: Machine/
-    ports:
-      - "8001:8000"
+    deploy:
+      mode: replicated
+      replicas: 2
     environment:
       MACHINE_TYPE: B
       PYTHONUNBUFFERED: 1
@@ -210,6 +212,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+
   mongodb:
     image: mongo:7
     container_name: mongodb

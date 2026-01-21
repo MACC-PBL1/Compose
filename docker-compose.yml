@@ -38,6 +38,8 @@ services:
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
       CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
+      HOST_IP: ${HOST_IP}
+      HOST_PORT: 8006
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/auth/health" ]
       interval: 30s
