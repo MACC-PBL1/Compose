@@ -38,8 +38,6 @@ services:
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
       CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
-      HOST_IP: ${HOST_IP}
-      HOST_PORT: 8006
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/auth/health" ]
       interval: 30s
@@ -334,7 +332,6 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
-
   consul:
     image: hashicorp/consul:1.15
     container_name: consul
@@ -349,7 +346,6 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
-
   mongodb:
     image: mongo:7
     container_name: mongodb
@@ -364,7 +360,6 @@ services:
       retries: 5
       start_period: 40s
     restart: unless-stopped
-
   mariadb:
     image: mariadb:12.1-ubi
     container_name: mariadb

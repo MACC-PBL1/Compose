@@ -46,7 +46,7 @@ frontend https_frontend
 #    use_backend machine_service if is_machine_routes
     
     # Deliver service routes
-    acl is_address path_beg /deliveries
+    acl is_address path_beg /delivery
     use_backend deliver_service if is_address
 
     # Log Aggregation Service routes
