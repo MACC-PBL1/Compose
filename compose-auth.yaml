@@ -3,6 +3,8 @@ services:
     build: Auth/
     volumes:
       - ./ssl/:/etc/rabbitmq/ssl/:ro
+    ports:
+      - "8000:8000"
     environment:
       PYTHONUNBUFFERED: 1
       SQLALCHEMY_DATABASE_URL: "mysql+aiomysql://${MARIADB_USER}:${MARIADB_PASSWORD}@${MARIADB_HOST}:${MARIADB_PORT}/${MARIADB_DATABASE}"
@@ -17,6 +19,8 @@ services:
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
       CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
+      HOST_IP: ${HOST_IP}
+      HOST_PORT: ${HOST_PORT}
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/auth/health" ]
       interval: 30s
@@ -24,22 +28,22 @@ services:
       retries: 3
       start_period: 40s
 
-  haproxy:
-    build: haproxy/
-    ports:
-      - "443:443"
-      - "80:80"
-      - "8404:8404"
-    environment:
-      CONSUL_HOST: ${CONSUL_HOST}
-      CONSUL_PORT: ${CONSUL_PORT}
-    volumes:
-      - ./haproxy/nat.cfg.template:/usr/local/etc/haproxy/haproxy.cfg.template:ro
-      - ./ssl:/etc/ssl/certs:ro
-    restart: unless-stopped
-    healthcheck:
-      test: [ "CMD", "pgrep", "haproxy" ]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
+  # haproxy:
+  #   build: haproxy/
+  #   ports:
+  #     - "443:443"
+  #     - "80:80"
+  #     - "8404:8404"
+  #   environment:
+  #     CONSUL_HOST: ${CONSUL_HOST}
+  #     CONSUL_PORT: ${CONSUL_PORT}
+  #   volumes:
+  #     - ./haproxy/auth.cfg.template:/usr/local/etc/haproxy/haproxy.cfg.template:ro
+  #     - ./ssl:/etc/ssl/certs:ro
+  #   restart: unless-stopped
+  #   healthcheck:
+  #     test: [ "CMD", "pgrep", "haproxy" ]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 3
+  #     start_period: 10s
