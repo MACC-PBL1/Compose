@@ -22,11 +22,6 @@ services:
     volumes:
       - machine-db:/database
       - ./ssl/:${RABBITMQ_CERT_PATH}:ro
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      mariadb:
-        condition: service_healthy
     restart: on-failure
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/machine/health" ]
@@ -57,11 +52,6 @@ services:
     volumes:
       - machine-db:/database
       - ./ssl/:${RABBITMQ_CERT_PATH}:ro
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      mariadb:
-        condition: service_healthy
     restart: on-failure
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/machine/health" ]
@@ -71,11 +61,6 @@ services:
       start_period: 40s
   order:
     build: Order/
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      mariadb:
-        condition: service_healthy
     volumes:
       - order-db:/database
       - ./ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -101,11 +86,6 @@ services:
       start_period: 40s
   delivery:
     build: Delivery/
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      mariadb:
-        condition: service_healthy
     volumes:
       - delivery-db:/database
       - ./ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -132,11 +112,6 @@ services:
       start_period: 40s
   payment:
     build: Payment/
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      mariadb:
-        condition: service_healthy
     volumes:
       - payment-db:/database
       - ./ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -163,10 +138,6 @@ services:
   logger:
     build: Logger/
     depends_on:
-      rabbitmq:
-        condition: service_healthy
-      mariadb:
-        condition: service_healthy
       mongodb:
         condition: service_healthy
     volumes:
@@ -194,11 +165,6 @@ services:
       start_period: 40s
   warehouse:
     build: Warehouse/
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      mariadb:
-        condition: service_healthy
     volumes:
       - warehouse-db:/database
       - ./ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -241,3 +207,24 @@ services:
       timeout: 5s
       retries: 3
       start_period: 10s
+  mongodb:
+    image: mongo:7
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/log_aggregation --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    restart: unless-stopped
+
+volumes:
+  machine-db:
+  order-db:
+  delivery-db:
+  payment-db:
+  warehouse-db:
