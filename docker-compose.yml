@@ -6,6 +6,22 @@ services:
         condition: service_healthy
       mariadb:
         condition: service_healthy
+      consul:
+        condition: service_healthy
+      machine_a:
+        condition: service_healthy
+      machine_b:
+        condition: service_healthy
+      order:
+        condition: service_healthy
+      delivery:
+        condition: service_healthy
+      payment:
+        condition: service_healthy
+      logger:
+        condition: service_healthy
+      warehouse:
+        condition: service_healthy
     volumes:
       - ./ssl_setup/ssl/:/etc/rabbitmq/ssl/:ro
     environment:
@@ -20,6 +36,7 @@ services:
       RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
       RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+      CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/auth/health" ]
@@ -45,6 +62,7 @@ services:
       RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
       RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+      CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
     volumes:
       - machine-db:/database
@@ -53,6 +71,8 @@ services:
       rabbitmq:
         condition: service_healthy
       mariadb:
+        condition: service_healthy
+      consul:
         condition: service_healthy
     restart: on-failure
     healthcheck:
@@ -89,6 +109,8 @@ services:
         condition: service_healthy
       mariadb:
         condition: service_healthy
+      consul:
+        condition: service_healthy
     restart: on-failure
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/machine/health" ]
@@ -102,6 +124,8 @@ services:
       rabbitmq:
         condition: service_healthy
       mariadb:
+        condition: service_healthy
+      consul:
         condition: service_healthy
     volumes:
       - order-db:/database
@@ -118,6 +142,7 @@ services:
       RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
       RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+      CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/order/health" ]
@@ -131,6 +156,8 @@ services:
       rabbitmq:
         condition: service_healthy
       mariadb:
+        condition: service_healthy
+      consul:
         condition: service_healthy
     volumes:
       - delivery-db:/database
@@ -147,6 +174,7 @@ services:
       RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
       RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+      CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
     restart: on-failure
     healthcheck:
@@ -161,6 +189,8 @@ services:
       rabbitmq:
         condition: service_healthy
       mariadb:
+        condition: service_healthy
+      consul:
         condition: service_healthy
     volumes:
       - payment-db:/database
@@ -177,6 +207,7 @@ services:
       RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
       RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+      CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/payment/health" ]
@@ -192,6 +223,8 @@ services:
       mariadb:
         condition: service_healthy
       mongodb:
+        condition: service_healthy
+      consul:
         condition: service_healthy
     volumes:
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -223,6 +256,8 @@ services:
         condition: service_healthy
       mariadb:
         condition: service_healthy
+      consul:
+        condition: service_healthy
     volumes:
       - warehouse-db:/database
       - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -238,6 +273,7 @@ services:
       RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
       RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+      CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/warehouse/health" ]
@@ -305,6 +341,12 @@ services:
       - "8600:8600/udp"
     command: agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "consul", "info"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   mongodb:
     image: mongo:7
