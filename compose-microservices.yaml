@@ -1,9 +1,8 @@
 services:
   machine_a:
     build: Machine/
-    deploy:
-      mode: replicated
-      replicas: 2
+    ports:
+      - "8000:8000"
     environment:
       MACHINE_TYPE: A
       PYTHONUNBUFFERED: 1
@@ -19,6 +18,8 @@ services:
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
       CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
+      HOST_IP: ${HOST_IP}
+      HOST_PORT: ${HOST_PORT}
     volumes:
       - machine-db:/database
       - ./ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -34,6 +35,8 @@ services:
     deploy:
       mode: replicated
       replicas: 2
+    ports:
+      - "8001:8000"
     environment:
       MACHINE_TYPE: B
       PYTHONUNBUFFERED: 1
@@ -49,6 +52,8 @@ services:
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
       CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
+      HOST_IP: ${HOST_IP}
+      HOST_PORT: ${HOST_PORT}
     volumes:
       - machine-db:/database
       - ./ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -64,6 +69,8 @@ services:
     volumes:
       - order-db:/database
       - ./ssl/:${RABBITMQ_CERT_PATH}:ro
+    ports:
+      - "8002:8000"
     environment:
       PYTHONUNBUFFERED: 1
       SQLALCHEMY_DATABASE_URL: "mysql+aiomysql://${MARIADB_USER}:${MARIADB_PASSWORD}@${MARIADB_HOST}:${MARIADB_PORT}/${MARIADB_DATABASE}"
@@ -78,6 +85,8 @@ services:
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
       CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
+      HOST_IP: ${HOST_IP}
+      HOST_PORT: ${HOST_PORT}
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/order/health" ]
       interval: 30s
@@ -89,6 +98,8 @@ services:
     volumes:
       - delivery-db:/database
       - ./ssl/:${RABBITMQ_CERT_PATH}:ro
+    ports:
+      - "8003:8000"
     environment:
       PYTHONUNBUFFERED: 1
       SQLALCHEMY_DATABASE_URL: "mysql+aiomysql://${MARIADB_USER}:${MARIADB_PASSWORD}@${MARIADB_HOST}:${MARIADB_PORT}/${MARIADB_DATABASE}"
@@ -103,6 +114,8 @@ services:
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
       CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
+      HOST_IP: ${HOST_IP}
+      HOST_PORT: ${HOST_PORT}
     restart: on-failure
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/deliveries/health" ]
@@ -115,6 +128,8 @@ services:
     volumes:
       - payment-db:/database
       - ./ssl/:${RABBITMQ_CERT_PATH}:ro
+    ports:
+      - "8004:8000"
     environment:
       PYTHONUNBUFFERED: 1
       SQLALCHEMY_DATABASE_URL: "mysql+aiomysql://${MARIADB_USER}:${MARIADB_PASSWORD}@${MARIADB_HOST}:${MARIADB_PORT}/${MARIADB_DATABASE}"
@@ -129,6 +144,8 @@ services:
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
       CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
+      HOST_IP: ${HOST_IP}
+      HOST_PORT: ${HOST_PORT}
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/payment/health" ]
       interval: 30s
@@ -143,7 +160,7 @@ services:
     volumes:
       - ./ssl/:${RABBITMQ_CERT_PATH}:ro
     ports:
-      - "8100:8000"
+      - "8005:8000"
     environment:
       PYTHONUNBUFFERED: 1
       MONGODB_URL: mongodb://mongodb:27017
@@ -159,6 +176,8 @@ services:
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
       CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
+      HOST_IP: ${HOST_IP}
+      HOST_PORT: ${HOST_PORT}
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/logger/health" ]
       interval: 30s
@@ -170,6 +189,8 @@ services:
     volumes:
       - warehouse-db:/database
       - ./ssl/:${RABBITMQ_CERT_PATH}:ro
+    ports:
+      - "8006:8000"
     environment:
       PYTHONUNBUFFERED: 1
       SQLALCHEMY_DATABASE_URL: "mysql+aiomysql://${MARIADB_USER}:${MARIADB_PASSWORD}@${MARIADB_HOST}:${MARIADB_PORT}/${MARIADB_DATABASE}"
@@ -184,6 +205,8 @@ services:
       RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
       CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
+      HOST_IP: ${HOST_IP}
+      HOST_PORT: ${HOST_PORT}
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/warehouse/health" ]
       interval: 30s
