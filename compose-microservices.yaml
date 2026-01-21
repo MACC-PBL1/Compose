@@ -19,7 +19,7 @@ services:
       CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
       HOST_IP: ${HOST_IP}
-      HOST_PORT: ${HOST_PORT}
+      HOST_PORT: 8000
     volumes:
       - machine-db:/database
       - ./ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -53,7 +53,7 @@ services:
       CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
       HOST_IP: ${HOST_IP}
-      HOST_PORT: ${HOST_PORT}
+      HOST_PORT: 8001
     volumes:
       - machine-db:/database
       - ./ssl/:${RABBITMQ_CERT_PATH}:ro
@@ -86,7 +86,7 @@ services:
       CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
       HOST_IP: ${HOST_IP}
-      HOST_PORT: ${HOST_PORT}
+      HOST_PORT: 8002
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/order/health" ]
       interval: 30s
@@ -115,7 +115,7 @@ services:
       CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
       HOST_IP: ${HOST_IP}
-      HOST_PORT: ${HOST_PORT}
+      HOST_PORT: 8003
     restart: on-failure
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/deliveries/health" ]
@@ -145,7 +145,7 @@ services:
       CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
       HOST_IP: ${HOST_IP}
-      HOST_PORT: ${HOST_PORT}
+      HOST_PORT: 8004
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/payment/health" ]
       interval: 30s
@@ -177,7 +177,7 @@ services:
       CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
       HOST_IP: ${HOST_IP}
-      HOST_PORT: ${HOST_PORT}
+      HOST_PORT: 8005
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/logger/health" ]
       interval: 30s
@@ -206,32 +206,13 @@ services:
       CONSUL_HOST: ${CONSUL_HOST}
       CONSUL_PORT: ${CONSUL_PORT}
       HOST_IP: ${HOST_IP}
-      HOST_PORT: ${HOST_PORT}
+      HOST_PORT: 8006
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:8000/warehouse/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
-  haproxy:
-    build: haproxy/
-    ports:
-      - "443:443"
-      - "80:80"
-      - "8404:8404"
-    environment:
-      CONSUL_HOST: ${CONSUL_HOST}
-      CONSUL_PORT: ${CONSUL_PORT}
-    volumes:
-      - ./haproxy/nat.cfg.template:/usr/local/etc/haproxy/haproxy.cfg.template:ro
-      - ./ssl:/etc/ssl/certs:ro
-    restart: unless-stopped
-    healthcheck:
-      test: [ "CMD", "pgrep", "haproxy" ]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
   mongodb:
     image: mongo:7
     container_name: mongodb
