@@ -230,3 +230,4 @@ volumes:
   delivery-db:
   payment-db:
   warehouse-db:
+  mongodb-data:
