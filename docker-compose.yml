@@ -151,6 +151,9 @@ services:
       start_period: 40s
   order:
     build: Order/
+    deploy:
+      mode: replicated
+      replicas: 2
     depends_on:
       rabbitmq:
         condition: service_healthy
