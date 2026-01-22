@@ -212,7 +212,39 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-
+  honeypot:
+    build: Honeypot/
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      consul:
+        condition: service_healthy
+    volumes:
+      - ./ssl/:${RABBITMQ_CERT_PATH}:ro
+    ports:
+      - "8007:8000"
+    environment:
+      PYTHONUNBUFFERED: 1
+      SQLALCHEMY_DATABASE_URL: "mysql+aiomysql://${MARIADB_USER}:${MARIADB_PASSWORD}@${MARIADB_HOST}:${MARIADB_PORT}/${MARIADB_DATABASE}"
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASSWD: ${RABBITMQ_PASSWD}
+      RABBITMQ_USE_TLS: ${RABBITMQ_USE_TLS}
+      RABBITMQ_CA_CERT_PATH: ${RABBITMQ_CA_CERT_PATH}
+      RABBITMQ_CLIENT_CERT_PATH: ${RABBITMQ_CLIENT_CERT_PATH}
+      RABBITMQ_CLIENT_KEY_PATH: ${RABBITMQ_CLIENT_KEY_PATH}
+      RABBITMQ_PREFETCH_COUNT: ${RABBITMQ_PREFETCH_COUNT}
+      CONSUL_HOST: ${CONSUL_HOST}
+      CONSUL_PORT: ${CONSUL_PORT}
+      HOST_IP: ${HOST_IP}
+      HOST_PORT: 8007
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/honeypot/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
   mongodb:
     image: mongo:7
     container_name: mongodb
@@ -227,7 +259,6 @@ services:
       retries: 5
       start_period: 40s
     restart: unless-stopped
-
 volumes:
   machine-db:
   order-db:

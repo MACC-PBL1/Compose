@@ -19,4 +19,6 @@
 [submodule "Warehouse"]
 	path = Warehouse
 	url = https://github.com/MACC-PBL1/Warehouse.git
-
+[submodule "Honeypot"]
+	path = Honeypot
+	url = https://github.com/MACC-PBL1/Honeypot.git

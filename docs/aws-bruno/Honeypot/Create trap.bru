@@ -1,0 +1,38 @@
+meta {
+  name: Create trap
+  type: http
+  seq: 1
+}
+
+post {
+  url: https://localhost/create
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiZXhwIjoxNzY5MDkwMjIyLCJyb2xlIjoiY2xpZW50IiwidHlwZSI6ImFjY2VzcyJ9.2-dvR7s3MdOY17NmAAowdW4NP1uvlrjar0AewQR_QrCyj_s1ruNDSOV3a-zETsTYVGQbjlKf1on4Qc7nOE_CHF3xEHQ1wZBnvyvvyjuoTrnX50oPGKj1FGXvBvRYt0PEnjWO0uONKOw47dKJxLB-nb65pJWPTXCixs7LdPUvABlkt2w3bW-xTlDM2B46R4Sqp1-4X4r7Xb8slGvRKTw9Z_JtPg4TCntQYY0H3bdkq5-xT-1s0JngP5xJ4n7Jzj8POJ3j2n67hlBjpzy9ftZB8AA0xfmDNNTKi2h-p9mJ1Uqz4xvyX2LYupDtVZW-aw2ljEsJdcBDK4nNJ2A_pONuqNmPMEjUQQlgKWvbX38vXzXOTSi9tbxk00rc5gVRjKhFHxzn3JjZdXvHAaDZAJPs_V6_4eUlX3rCJ83-vfFjcWPf2S8LzrEz1GsCqI6DXy6HbEnVpzIfEkLA1Lgrk2OprC4-xGl8sAk0m5zhhoD9zyalqsi9vYMZrnBG2aT5JkmStSbHFs0BrljZvvWyhm0gktymuAKn8PtfzjL0m56E-426bU1khUcR--BPzNm0Sjld-eMHf942RnkNBrGkIMq1NPjvPet8bZiggQuK-PndsQ2t5E-0yCYaEZTmL5n3eu3IUvAMO1xYUfM8uB7HV-9Phd2nzu9tD6uQboQch8Hnb8g
+}
+
+body:json {
+  {
+    "city": "Donostia",
+    "street": "Toki Eder",
+    "zip": "20",
+    "pieces": [
+      {
+        "type": "A",
+        "quantity": 5
+      },
+      {
+        "type": "B",
+        "quantity": 5
+      }
+    ]
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
