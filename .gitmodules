@@ -22,3 +22,6 @@
 [submodule "Honeypot"]
 	path = Honeypot
 	url = https://github.com/MACC-PBL1/Honeypot.git
+[submodule "Chassis"]
+	path = Chassis
+	url = https://github.com/MACC-PBL1/Chassis.git
