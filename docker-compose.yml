@@ -23,7 +23,7 @@ services:
       warehouse:
         condition: service_healthy
     volumes:
-      - ./ssl_setup/ssl/:/etc/rabbitmq/ssl/:ro
+      - ./ssl/:${RABBITMQ_CERT_PATH}:ro
     environment:
       PYTHONUNBUFFERED: 1
       SQLALCHEMY_DATABASE_URL: "mysql+aiomysql://${MARIADB_USER}:${MARIADB_PASSWORD}@${MARIADB_HOST}:${MARIADB_PORT}/${MARIADB_DATABASE}"
@@ -66,7 +66,7 @@ services:
       CONSUL_PORT: ${CONSUL_PORT}
     volumes:
       - machine-db:/database
-      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
+      - ./ssl/:${RABBITMQ_CERT_PATH}:ro
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -103,7 +103,7 @@ services:
       CONSUL_PORT: ${CONSUL_PORT}
     volumes:
       - machine-db:/database
-      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
+      - ./ssl/:${RABBITMQ_CERT_PATH}:ro
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -129,7 +129,7 @@ services:
         condition: service_healthy
     volumes:
       - order-db:/database
-      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
+      - ./ssl/:${RABBITMQ_CERT_PATH}:ro
     environment:
       PYTHONUNBUFFERED: 1
       SQLALCHEMY_DATABASE_URL: "mysql+aiomysql://${MARIADB_USER}:${MARIADB_PASSWORD}@${MARIADB_HOST}:${MARIADB_PORT}/${MARIADB_DATABASE}"
@@ -161,7 +161,7 @@ services:
         condition: service_healthy
     volumes:
       - delivery-db:/database
-      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
+      - ./ssl/:${RABBITMQ_CERT_PATH}:ro
     environment:
       PYTHONUNBUFFERED: 1
       SQLALCHEMY_DATABASE_URL: "mysql+aiomysql://${MARIADB_USER}:${MARIADB_PASSWORD}@${MARIADB_HOST}:${MARIADB_PORT}/${MARIADB_DATABASE}"
@@ -194,7 +194,7 @@ services:
         condition: service_healthy
     volumes:
       - payment-db:/database
-      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
+      - ./ssl/:${RABBITMQ_CERT_PATH}:ro
     environment:
       PYTHONUNBUFFERED: 1
       SQLALCHEMY_DATABASE_URL: "mysql+aiomysql://${MARIADB_USER}:${MARIADB_PASSWORD}@${MARIADB_HOST}:${MARIADB_PORT}/${MARIADB_DATABASE}"
@@ -227,7 +227,7 @@ services:
       consul:
         condition: service_healthy
     volumes:
-      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
+      - ./ssl/:${RABBITMQ_CERT_PATH}:ro
     ports:
       - "8100:8000"
     environment:
@@ -260,7 +260,7 @@ services:
         condition: service_healthy
     volumes:
       - warehouse-db:/database
-      - ./ssl_setup/ssl/:${RABBITMQ_CERT_PATH}:ro
+      - ./ssl/:${RABBITMQ_CERT_PATH}:ro
     environment:
       PYTHONUNBUFFERED: 1
       SQLALCHEMY_DATABASE_URL: "mysql+aiomysql://${MARIADB_USER}:${MARIADB_PASSWORD}@${MARIADB_HOST}:${MARIADB_PORT}/${MARIADB_DATABASE}"
@@ -298,8 +298,8 @@ services:
       retries: 5
       start_period: 10s
     volumes:
-      - ./ssl_setup/ssl:/etc/rabbitmq/ssl:ro
-      - ./ssl_setup/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./ssl:/etc/rabbitmq/ssl:ro
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
       - rabbitmq_data:/var/lib/rabbitmq
     restart: unless-stopped
   haproxy:
@@ -323,8 +323,8 @@ services:
       payment:
         condition: service_healthy
     volumes:
-      - ./ssl_setup/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
-      - ./ssl_setup/ssl:/etc/ssl/certs:ro
+      - ./haproxy/global.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - ./ssl:/etc/ssl/certs:ro
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "pgrep", "haproxy" ]
