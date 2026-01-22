@@ -214,11 +214,6 @@ services:
       start_period: 40s
   honeypot:
     build: Honeypot/
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      consul:
-        condition: service_healthy
     volumes:
       - ./ssl/:${RABBITMQ_CERT_PATH}:ro
     ports:
