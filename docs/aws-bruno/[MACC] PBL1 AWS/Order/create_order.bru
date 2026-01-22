@@ -1,0 +1,64 @@
+meta {
+  name: Create Order
+  type: http
+  seq: 3
+}
+
+post {
+  url: https://54.158.203.200/order/create
+  body: json
+  auth: bearer
+}
+
+headers {
+  Authorization: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc2MTU1NTUxMH0.CL9AWKv00h98JJyXG0RNlvdyF20Gju1vw1ZMFiP5WEbWq2fxxooRTeQzK_9h4e-C-9bWdJRDO3BMcTDtg3Gtgo8vnwF5hP4XU-inj18WpoMNL3eLZu75s5gt2IVi-szNYzZF-Pm3akwCnvvaeJCIaw35uMcoW8qQmbr0asQ98u9z3l0eEd-_geBNDpB02wApiirvtMtU5EkUxeYrVmh5UeN-MccGK4KUiuG4n9IKYcNC-hQpxkNqTwBcalmKHibfUCpMSmYWRfwVsq8P9ZI0ZKghVJURpHTkiYbNBUemL_tldR5_gvcjjRYL_11f7Ssm1j8qZHx5NH63EXDtCwlozw
+}
+
+auth:bearer {
+  token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzY4Nzc4MTM3LCJyb2xlIjoiYWRtaW4iLCJ0eXBlIjoiYWNjZXNzIn0.Fa9fxVjb3mxN2rpqJcQRgtPgdjIhaHAYjLArVVzdDa-xk0Q9Q4mzZctQfWnkqdLCfE5gfIW-YMxU519CVSSMRcgCQapQ2PtRt3TM1OE24tuON3AkqbSpuIa4xjDyr87XaYGf9l8QGasbBPuAkpZiRHA8yYxJOrVhaoY4O-37hmXGmMH9PL57xHTfzX8CBPvCd3iFJYx8UbbKht_j-vKD_sIJJ8i4wpwJpZMreNbGmCQP-dUBbFAxNdJW3q_wI0GgcaSPOhNLS5aYSLfwXsFLaZ8DFcUV_p4sKyTTOpNm3o_TVIn9wftE8YuleGpiZfvgyw0aHwaa8TqP20tNv0I2F2kMO3asGbiNF6suJ65GnyDVRii0avFhhTJWMAF9Ib9LPAhsfntTnFYbqeBs5Mkg7UnwP7ZRQduDXsLVMeVaJ5NKEzfozPXOMmO3A0CRmMBAUpcAxthZU1Q6M8BGsekL9kckmM0jWCoxamnqoE_iSR_Y_hpMyfn7ygO2tAVRGAiH7SF7rwpEikAv25LSyZ5U7Pfeul5Blr1gkhqczqRcvyNjUP8qBNajBVVFhtaDRQB-pK15A0yP18CuRuCuVbGczL6niGpu5mp5XCjLJk9PQKgApZcPj6N_5m-oPyQ0XrDqnIOmo0b1T_ON5q6gJzwinxZI4U267ybP1hcW0p40Axw
+}
+
+body:json {
+  {
+    "city": "Donostia",
+    "street": "Toki Eder",
+    "zip": "20",
+    "pieces": [
+      {
+        "type": "A",
+        "quantity": 5
+      },
+      {
+        "type": "B",
+        "quantity": 5
+      }
+    ]
+  }
+}
+
+docs {
+  # Create Order
+  
+  Creates a new manufacturing order in the system.
+  
+  ## Request Body
+  - `client_id` (integer, required): ID of the client placing the order
+  - `number_of_pieces` (integer, required): Number of pieces to manufacture
+  - `description` (string, required): Description of the order
+  
+  ## Expected Response (201 Created)
+  ```json
+  {
+    "id": 1,
+    "client_id": 1,
+    "number_of_pieces": 5,
+    "description": "Order for custom parts",
+    "status": "Pending",
+    "created_at": "2025-10-23T10:30:00",
+    "pieces": []
+  }
+  ```
+  
+  ## Events Published
+  This endpoint publishes an `order.created` event to RabbitMQ.
+}

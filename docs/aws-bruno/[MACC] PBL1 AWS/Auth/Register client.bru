@@ -1,0 +1,34 @@
+meta {
+  name: Register client
+  type: http
+  seq: 5
+}
+
+post {
+  url: https://localhost/auth/register
+  body: json
+  auth: bearer
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc2MDk4MTg4OH0.UswfGazGml8qXcGWPbU1_UZ1JYIKb5Aj64h4M8rRBf_9WVmqGmUN3yjmlvGV-n_lnTKn-ru2lrsyQ-czP0nyFmleXD4pqnPvu1y-nxtlGVwT3CPYMIl1MRmHlcZmcN2QZxzVXzRrJSC-C0fcc3ASyaJlwXgBhSN7KrmxBjLxkeBfq0Uu9wFxzcGc2s3_iJpiy43AQfBrdm8cezfyx9PxrVtd4MKqLB9jP0V2U-LgjgRbNKBv00nAVO7-1OOlLjLt-ZrJkaBIKwCo0wBpHs-U8VDbWv_intsrakaJCdLpiMuS5IJZUskXjqkcvc2b4d6YFMUSk37v4MZg2u2hTGyjWQ
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzY0Mzc1NzQ3LCJyb2xlIjoiYWRtaW4iLCJ0eXBlIjoiYWNjZXNzIn0.Xwqazsv0LpeWgH_TsKzKky7LQQgJxjicheNVTgh36ecwG_HVOnF75i_OBF65yT5fuYL6wbG0yEBk9KC6nKFOS1HMHW-5DPHCXGnmIKWRIN6zdpKp6dFjRKvF18UMBqQUqElSx2P_aRhrrxyg6xVWhqbdzdl5CXwUaZRO4w9Qnks63RDEHZKpIfbIg_MOhCLqYnkP6lQByyxK9k4V7T8x1gA01f4vtR20mWNjsgxBM2QRi4QxuLQ6tCY3CgpC-2hXKymSgMI9MNU4UniKIJy6n1DNen82Q2dV0piQsivjGa3TN8KM2E0VU5sLzincQB0n5FeuGuC3LoCSyYeYQWuBCNkymrMBAwGBbe36LGejPHlXS5MC1FUVRO8pS5xyjT54UESKRBj-CiL45kzvdtRUsFx0q-HNt_37ODvNbbbkDIH7IiRhYaAKXVbOHdIYMYC8QobAuWmNK6eViiwTYoaztzMiim43TICTp5fGwQhMXd12m51-UXc7vofpOIcF_nWi8frX6IrQjIKDqiVqtV8IPZ4VCWOW0OEGoLYpAbthoZouWzA2eUtU3Gc4B5jehPNAtPoawzdwgRveTlf57GYMxl5NpcH0oGAD1Qlr5CFihWZ9IXeedmvXLNmYVFbzqujJV9SPMTZ944EWJA-I_SRYLR_BQddn3QocC1YdUgdkSas
+}
+
+body:json {
+  {
+    "username": "user_1@micro.com",
+    "password": "pass",
+    "role": "client"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

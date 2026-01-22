@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "[MACC] PBL1 AWS",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

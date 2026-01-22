@@ -1,0 +1,55 @@
+meta {
+  name: Deposit payment
+  type: http
+  seq: 4
+}
+
+post {
+  url: https://54.158.203.200/payment/deposit?amount=150
+  body: json
+  auth: bearer
+}
+
+params:query {
+  amount: 150
+}
+
+headers {
+  Authorization: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsInR5cGUiOiJyZWZyZXNoIiwiZXhwIjoxNzYyMTI3MjM4fQ.LRgj5HGAnl3zWOsi6dsE4u9MjPfrTsxVD0j5_bRWp4F1QXcPytTWVOdsNESDe7WWAhiOStt_jZHxtwwE69GSSEie7_FJ969Q4SutNQoQPVo2yo_YF4ioSQXMw0Ye8h6pg-I4Mio7uH2dXJJLnqI37rLEbHEq4j2uODgNUnB42eESQoHxN2ogz6AqDYbB3rHglQ9lp9bYP4gPIBEl6u8eGGgPNNrdbXV25dXGhaR8-ovRiuUrW2cWKyTVYYX7MfOaln_e4vfKawf5z5whwFlnf9mJEesh3ISNuoAPTHQ8z8CU7ohqV7Ptf2iGqOAplY-zENrK5aX_hEkYX9OPGE7aGA
+}
+
+auth:bearer {
+  token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzY5MDY5ODc3LCJyb2xlIjoiYWRtaW4iLCJ0eXBlIjoiYWNjZXNzIn0.RIqknr_k9I250wZolIzmJjLB8LnAan0v_YPiqzxFNpYNFQFecYhZMqGm5zVl1mkUiLyAI6XsxKIXyKIllbKrrh7Hf9L1EJfD6ZQns9xXlB7ewdxV35ADaDDkXtupZH5i_HwDXxhSriuCD_wb0LOLQayozOxUI1LuagA4Q2Is8joZ-DeIxDy_GdcHvfno62tJ6LLiVpGpqC_uLtc3A6kL-bvq681JoIWmqFkN-5kM6HwFeVnUBsszbO3B5FKDzRhWR-KGwlEMt-8GDuVmUNMXwlI1LrXy2Ku76UDCU8ePO2Fh92m2FajZUhqmRqtAChRaU03jAuABKfpSrBtAoeiqzgssVRaTHLicpvc95PeQFLyBzkcNuGv930PHdkuQrNqsv1ydIIWUH2Y-Y3wPdhnmOE8vn6W2jTtR7OBfRqND7nF76g7LfXhwZ5KPD5lU9uw8ykGZa7u9GARdPMwZ46XPxrj59ltlH203_U64ic1vYKxlUPFuFjOycsg57SzFSP7Cv1BGi6LUV4nQiM77C3OmskZowLXXkZuORIbSYPXEhKOT4GE9WNOniXQcbDLZe3zRkbf0PHJzHUveGg_ZixOPnWAbuYJTgWfV-yH9UzRB5hIB45qmrypOBA9PN7r1WaZVgj_qXJjFfSWH5ijZIkKnQbCm1V96NsbxNF6cWX3EYHM
+}
+
+body:json {
+  
+  
+}
+
+docs {
+  # Create Order
+  
+  Creates a new manufacturing order in the system.
+  
+  ## Request Body
+  - `client_id` (integer, required): ID of the client placing the order
+  - `number_of_pieces` (integer, required): Number of pieces to manufacture
+  - `description` (string, required): Description of the order
+  
+  ## Expected Response (201 Created)
+  ```json
+  {
+    "id": 1,
+    "client_id": 1,
+    "number_of_pieces": 5,
+    "description": "Order for custom parts",
+    "status": "Pending",
+    "created_at": "2025-10-23T10:30:00",
+    "pieces": []
+  }
+  ```
+  
+  ## Events Published
+  This endpoint publishes an `order.created` event to RabbitMQ.
+}

@@ -1,0 +1,37 @@
+meta {
+  name: Get logs example
+  type: http
+  seq: 2
+}
+
+get {
+  url: https://localhost/logger/?level=INFO&limit=50
+  body: none
+  auth: bearer
+}
+
+params:query {
+  level: INFO
+  limit: 50
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc2MTQ5MzMzNX0.TlGizYztwlw5kRi_BdfO_La0XaTlbPvqviV-gBdv9dnPECwJODdo71nMDh0m2gfdJWswUQAM-DYPRKxe5u4Hs1WrS3OgrXCP8AFUw7Uov3SQQAx3mqnnGS1k6V5UoYM-JQaYa0p85vHcoUGHhdSj6xkmp3WxGWN1Aj4fciuJZu0NRa0xZvNIClTv5lGBqmv64zs59clywUsM5sWL8OsuFGEeMIQhGQQOAmNZHRHkktocIW0umPT3mIskItPUyGSPCirUdAjjC6lN8ZXdm4Wde4en1L8GrqteHVndTeBOKhE8BBJ13E9EXtNH5gs8GFvzokrKgRwiEFo0vPlEgps84w
+}
+
+auth:bearer {
+  token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzY4Nzc0NzI3LCJyb2xlIjoiYWRtaW4iLCJ0eXBlIjoiYWNjZXNzIn0.JrUlvgW_fXxKp7qEmNzr7vLqOtqdfN_d3G1YpDXsEfeHYgY8y452YCKNf5tpenQL6Bl9s9y1CVX2gy7zc53lc3-5GR6kr11-kNaZcv_VERdfFcomWWCq7H2UILyA7KPr32Tt5wD6k4hmXmpQjom2NAnkIn-idGh9_buyCVOsDgOJcWpkKlfUu_al1UtKP2YzRuKuUmQQOsdo0o0bbu7JljzJh3mEiUvWQiJp_kxzWb3D_zwqmBKqXTw6v2ZChawWuE7i3ZG_NhZ897tHoLhWsrM0UVvctFfvxCkVACSiiRbhG5pwiTHC-XCJ1egbnvll5uYpw7S1c4UV6Tp7DYGr4YQIXoMi0qM7QBlCNIoPavquFtcQXNFBRZm_9QoqqfoI7EyerQjzE3XmZNlbEbMgKw6Uh-crfZYl4cCYlQ5PCdKykD9noDWk8-eINlKFgtYLI63ncP1CXqoTlQLE5rtsCrrLvwwfASUNKscqEQwNJTX2FHulj8QyKVBmr1QBvXprCXctahX2D5DgegD9haGBA0Z6ZcIv4Hj-DReQFcIqrO06JZFTT44-bJFvtVrVu9vAIvpDxsH2TlxJflTv_ddairziwtdMclNxTbfr-c4J2_Vt_wJhTnSRV6oePbqJZcgrlDRztelFqPf8dNGMKzTz3RixAtVRKGLPVr4MPB1-9L8
+}
+
+docs {
+  # Order Health Check
+  
+  Simple endpoint to verify that the Order service is running.
+  
+  ## Expected Response
+  ```json
+  {
+    "detail": "Order service is running"
+  }
+  ```
+}

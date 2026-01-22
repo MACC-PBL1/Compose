@@ -1,0 +1,20 @@
+meta {
+  name: Auth Healthcheck
+  type: http
+  seq: 3
+}
+
+get {
+  url: https://localhost/delivery/health/auth
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzY0NDU1NjA2LCJyb2xlIjoiYWRtaW4iLCJ0eXBlIjoiYWNjZXNzIn0.F_2-6Rliycvx6xds3uJU2QNTAA6yzgFdas4pdJus4iHOrPDWiNale0LxJmpzw3QZU4zmbL_movduDwfjTF5U6SXr9mK9HRHiSb-HCpPCVMAg4JMl_HlCaYabdUS2zRDzSEjg662Imcx8dJ5Fhkuxcs4wPTK0J5vL7Av-djUb2lIs-2ZyHwH-nG8rdedoNheKzvjbk_G86aW94fVHVK7xNiel9LvlZp3FUKll2UQrY74qTS3ClHvJ_sagd1cI7nRFRlsgNSK5T9VDoqFcw4AcIXiyXVH_Xs7-LqSFxXwZLleLgqRVRKTthPAlbnO2_BZIPROmH5zNA2Va_YYA6wKlDX7VAiTbxXrnhLhMiE3ySL2qLzGI1J0btqoBB2FP7kp-iX468OIuJ2JtHrc4WB0261YzEZhRP8GKoJucVtSfDzDMJkOW48iR3fCv5SrLH30o659GkBrieS8-D2EMlb1E7Cnr0nmVDDU_wrgIhDT8qN_T2H7pNtQGhKHlWuOO5wWBBQnEajrY-2LAE1fhsSb9mPTA73QjWBfz6uZGwAfh2cOM0cInsYaSMU6CUkUo0nQlDFK09yJexgNZgpmv1w1iqbZv3FzwZA_gbxa0FRUMooyRIZ23mFDpXryJx9lptHGTjjBCxzawCet5ZLatiuiFkH1OzXOkwwA1UrdzknG2k00
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

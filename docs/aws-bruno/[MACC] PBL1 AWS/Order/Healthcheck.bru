@@ -1,0 +1,28 @@
+meta {
+  name: Healthcheck
+  type: http
+  seq: 1
+}
+
+get {
+  url: https://localhost/order/health
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc2MTQ5MzMzNX0.TlGizYztwlw5kRi_BdfO_La0XaTlbPvqviV-gBdv9dnPECwJODdo71nMDh0m2gfdJWswUQAM-DYPRKxe5u4Hs1WrS3OgrXCP8AFUw7Uov3SQQAx3mqnnGS1k6V5UoYM-JQaYa0p85vHcoUGHhdSj6xkmp3WxGWN1Aj4fciuJZu0NRa0xZvNIClTv5lGBqmv64zs59clywUsM5sWL8OsuFGEeMIQhGQQOAmNZHRHkktocIW0umPT3mIskItPUyGSPCirUdAjjC6lN8ZXdm4Wde4en1L8GrqteHVndTeBOKhE8BBJ13E9EXtNH5gs8GFvzokrKgRwiEFo0vPlEgps84w
+}
+
+docs {
+  # Order Health Check
+  
+  Simple endpoint to verify that the Order service is running.
+  
+  ## Expected Response
+  ```json
+  {
+    "detail": "Order service is running"
+  }
+  ```
+}

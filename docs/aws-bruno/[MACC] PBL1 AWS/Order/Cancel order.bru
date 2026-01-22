@@ -1,0 +1,52 @@
+meta {
+  name: Cancel order
+  type: http
+  seq: 4
+}
+
+post {
+  url: https://localhost/order/cancel
+  body: json
+  auth: bearer
+}
+
+headers {
+  Authorization: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZW1haWwiOiJhZG1pbkBleGFtcGxlLmNvbSIsInJvbGUiOiJhZG1pbiIsImV4cCI6MTc2MTU1NTUxMH0.CL9AWKv00h98JJyXG0RNlvdyF20Gju1vw1ZMFiP5WEbWq2fxxooRTeQzK_9h4e-C-9bWdJRDO3BMcTDtg3Gtgo8vnwF5hP4XU-inj18WpoMNL3eLZu75s5gt2IVi-szNYzZF-Pm3akwCnvvaeJCIaw35uMcoW8qQmbr0asQ98u9z3l0eEd-_geBNDpB02wApiirvtMtU5EkUxeYrVmh5UeN-MccGK4KUiuG4n9IKYcNC-hQpxkNqTwBcalmKHibfUCpMSmYWRfwVsq8P9ZI0ZKghVJURpHTkiYbNBUemL_tldR5_gvcjjRYL_11f7Ssm1j8qZHx5NH63EXDtCwlozw
+}
+
+auth:bearer {
+  token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzY4Nzc5ODA4LCJyb2xlIjoiYWRtaW4iLCJ0eXBlIjoiYWNjZXNzIn0.f958nyPuAJrbYaUjWIdfYlEpJPa9UHb2eveQJ6FzKoNMpf7Y5HCKB0f9QuJhXWOb3g7dLJlRu23kPgKJvzySomwgdHGL5SwyjLoNdil2tHfFDKZZbgAyyC3gzwsNReYovbo9-wtae8xTPDMp7oJ8oguxvAfCOb4RxOBbiTIxUjf_-Q5wBb2hHURwHmjpoSwg-AIkBoN8xRxR7prwT-QG1itkphYM_ilG6od161VsYXKIwrMTa8z_Xab4z0tWpEbwYyzjfXyDLbb-c--pQ8h9vSbW-OAaLQh4aLb5-bV3UsrK5A8F4yAv4pSh1ftExPm2RCmnj8jU6b69__zut3Y08rDT9HULnd5a2yf7UMeNjVBlRfdAgp0ab91l8JK7MKb6h24tzFzSYEuZ2E6m_ZEgLDadxb_1b76oIPK8IOYMfRa7H-sH51yp-przUwY0hw4lx_6woSV86wLl5ByeIskNDyx9hf_7c-ZFDZZFOZTYKMP8mPHeQ_tx2f7c7uom-uf7el2QK1f4iYjl54HEWeRvDzCN0OOfjxXqvgVd4TgUB9xH1uOur23mEjqSIK1op--V8ruSg0yHDsUqUwllFnlU4jEjD3P75qsJ7rdiGrNaLXQ8y9GkN_RCu0Yw5U4LLHaPZjXCwoJXEnicHPWlJa-hEvBjI8zqqvWHjOTS8BcCS80
+}
+
+body:json {
+  {
+    "order_id": 2
+  }
+}
+
+docs {
+  # Create Order
+  
+  Creates a new manufacturing order in the system.
+  
+  ## Request Body
+  - `client_id` (integer, required): ID of the client placing the order
+  - `number_of_pieces` (integer, required): Number of pieces to manufacture
+  - `description` (string, required): Description of the order
+  
+  ## Expected Response (201 Created)
+  ```json
+  {
+    "id": 1,
+    "client_id": 1,
+    "number_of_pieces": 5,
+    "description": "Order for custom parts",
+    "status": "Pending",
+    "created_at": "2025-10-23T10:30:00",
+    "pieces": []
+  }
+  ```
+  
+  ## Events Published
+  This endpoint publishes an `order.created` event to RabbitMQ.
+}
